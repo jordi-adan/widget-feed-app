@@ -12,6 +12,11 @@ export interface CreateWidgetRequest {
   content: string;
 }
 
+export interface UpdateWidgetContentRequest {
+  id: string;
+  content: string;
+}
+
 export interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
@@ -19,6 +24,10 @@ export interface ApiResponse<T = any> {
 }
 
 export interface CreateWidgetResponse extends ApiResponse {
+  widget?: WidgetPrimitive;
+}
+
+export interface UpdateWidgetContentResponse extends ApiResponse {
   widget?: WidgetPrimitive;
 }
 

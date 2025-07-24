@@ -2,11 +2,7 @@ import { WidgetRepository } from '../domain/repositories/WidgetRepository';
 import { Widget } from '../models/widget';
 import { WidgetId } from '../domain/entities/value-objects/WidgetId';
 import { WidgetContent } from '../domain/entities/value-objects/WidgetContent';
-
-export interface UpdateWidgetContentRequest {
-  id: string;
-  content: string;
-}
+import { UpdateWidgetContentRequest } from '../types';
 
 export interface UpdateWidgetContentResponse {
   success: boolean;

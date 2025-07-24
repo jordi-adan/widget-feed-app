@@ -2,7 +2,8 @@
 import './WidgetFeed.css';
 import { WidgetItem } from './WidgetItem';
 import { CreateWidgetForm } from './CreateWidgetForm';
-import { Widget, WidgetType } from '../types';
+import { SortControls } from './SortControls';
+import { Widget, WidgetType, SortField, SortOrder } from '../types';
 import { widgetApi } from '../services/widgetApi';
 
 export const WidgetFeed: React.FC = () => {
@@ -10,16 +11,18 @@ export const WidgetFeed: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [sortBy, setSortBy] = useState<SortField>('timestamp');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
 
   useEffect(() => {
     loadWidgets();
-  }, []);
+  }, [sortBy, sortOrder]);
 
   const loadWidgets = async () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await widgetApi.getAllWidgets();
+      const response = await widgetApi.getSortedWidgets({ sortBy, sortOrder });
       setWidgets(response.widgets || []);
     } catch (err) {
       setError('Failed to load widgets');
@@ -27,6 +30,11 @@ export const WidgetFeed: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSortChange = (newSortBy: SortField, newSortOrder: SortOrder) => {
+    setSortBy(newSortBy);
+    setSortOrder(newSortOrder);
   };
 
   const handleCreateWidget = async (type: WidgetType, content: string) => {
@@ -109,6 +117,15 @@ export const WidgetFeed: React.FC = () => {
         <CreateWidgetForm 
           onSubmit={handleCreateWidget}
           onCancel={() => setShowCreateForm(false)}
+        />
+      )}
+
+      {!showCreateForm && widgets.length > 0 && (
+        <SortControls
+          sortBy={sortBy}
+          sortOrder={sortOrder}
+          onSortChange={handleSortChange}
+          disabled={loading}
         />
       )}
 

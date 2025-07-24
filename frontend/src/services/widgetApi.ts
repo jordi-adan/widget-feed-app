@@ -1,4 +1,4 @@
-import { CreateWidgetRequest, CreateWidgetResponse, GetAllWidgetsResponse, UpdateWidgetRequest, UpdateWidgetResponse, DeleteWidgetResponse } from '../types';
+import { CreateWidgetRequest, CreateWidgetResponse, GetAllWidgetsResponse, UpdateWidgetRequest, UpdateWidgetResponse, DeleteWidgetResponse, GetSortedWidgetsRequest, GetSortedWidgetsResponse } from '../types';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
 
@@ -54,6 +54,23 @@ class WidgetApiService {
     return this.request<DeleteWidgetResponse>(`/widgets/${id}`, {
       method: 'DELETE',
     });
+  }
+
+  async getSortedWidgets(params: GetSortedWidgetsRequest = {}): Promise<GetSortedWidgetsResponse> {
+    const searchParams = new URLSearchParams();
+    
+    if (params.sortBy) {
+      searchParams.append('sortBy', params.sortBy);
+    }
+    
+    if (params.sortOrder) {
+      searchParams.append('sortOrder', params.sortOrder);
+    }
+
+    const query = searchParams.toString();
+    const endpoint = query ? `/widgets/sorted?${query}` : '/widgets/sorted';
+    
+    return this.request<GetSortedWidgetsResponse>(endpoint);
   }
 }
 

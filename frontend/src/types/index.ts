@@ -39,3 +39,16 @@ export interface GetAllWidgetsResponse extends ApiResponse {
 export interface DeleteWidgetResponse extends ApiResponse {
   message?: string;
 }
+
+// Sorting Types
+export type SortField = 'timestamp' | 'type';
+export type SortOrder = 'asc' | 'desc';
+
+export interface GetSortedWidgetsRequest {
+  sortBy?: SortField;
+  sortOrder?: SortOrder;
+}
+
+export interface GetSortedWidgetsResponse extends ApiResponse {
+  widgets?: Widget[];
+}

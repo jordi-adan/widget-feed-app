@@ -1,7 +1,8 @@
-   import { Request, Response, Router } from 'express';
+import { Request, Response, Router } from 'express';
 import { CreateWidgetUseCase } from '../application/CreateWidgetUseCase';
 import { GetAllWidgetsUseCase } from '../application/GetAllWidgetsUseCase';
 import { UpdateWidgetContentUseCase } from '../application/UpdateWidgetContentUseCase';
+import { DeleteWidgetUseCase } from '../application/DeleteWidgetUseCase';
 import { WidgetErrorCode } from '../domain/errors/WidgetErrors';
 
 export class WidgetController {
@@ -10,7 +11,8 @@ export class WidgetController {
   constructor(
     private readonly createWidgetUseCase: CreateWidgetUseCase,
     private readonly getAllWidgetsUseCase: GetAllWidgetsUseCase,
-    private readonly updateWidgetContentUseCase: UpdateWidgetContentUseCase
+    private readonly updateWidgetContentUseCase: UpdateWidgetContentUseCase,
+    private readonly deleteWidgetUseCase: DeleteWidgetUseCase
   ) {
     this.router = Router();
     this.setupRoutes();
@@ -20,6 +22,7 @@ export class WidgetController {
     this.router.post('/', this.createWidget.bind(this));
     this.router.get('/', this.getAllWidgets.bind(this));
     this.router.put('/:id', this.updateWidgetContent.bind(this));
+    this.router.delete('/:id', this.deleteWidget.bind(this));
   }
 
   public getRouter(): Router {
@@ -103,6 +106,31 @@ export class WidgetController {
         res.status(200).json({
           success: true,
           widget: result.widget ? result.widget.toPrimitive() : null
+        });
+      } else {
+        const statusCode = result.errorCode === WidgetErrorCode.WIDGET_NOT_FOUND ? 404 : 400;
+        res.status(statusCode).json({
+          success: false,
+          error: result.error
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: 'Internal server error'
+      });
+    }
+  }
+
+  private async deleteWidget(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+
+      const result = await this.deleteWidgetUseCase.execute({ id });
+
+      if (result.success) {
+        res.status(200).json({
+          success: true
         });
       } else {
         const statusCode = result.errorCode === WidgetErrorCode.WIDGET_NOT_FOUND ? 404 : 400;

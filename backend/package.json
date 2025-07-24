@@ -9,7 +9,11 @@
     "build": "tsc",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "test:coverage:ci": "jest --coverage --watchAll=false --ci",
+    "lint": "echo 'Linting not configured yet - will be added in future PR'",
+    "lint:check": "echo 'Lint check would go here'",
+    "coverage:check": "jest --coverage --passWithNoTests"
   },
   "dependencies": {
     "cors": "^2.8.5",

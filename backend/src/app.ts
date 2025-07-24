@@ -3,6 +3,7 @@ import cors from 'cors';
 import { WidgetController } from './controllers/widgetController';
 import { CreateWidgetUseCase } from './application/CreateWidgetUseCase';
 import { GetAllWidgetsUseCase } from './application/GetAllWidgetsUseCase';
+import { GetSortedWidgetsUseCase } from './application/GetSortedWidgetsUseCase';
 import { UpdateWidgetContentUseCase } from './application/UpdateWidgetContentUseCase';
 import { DeleteWidgetUseCase } from './application/DeleteWidgetUseCase';
 import { InMemoryWidgetRepository } from './infrastructure/repositories/InMemoryWidgetRepository';
@@ -13,6 +14,7 @@ class ApplicationContainer {
   private widgetRepository: InMemoryWidgetRepository;
   private createWidgetUseCase: CreateWidgetUseCase;
   private getAllWidgetsUseCase: GetAllWidgetsUseCase;
+  private getSortedWidgetsUseCase: GetSortedWidgetsUseCase;
   private updateWidgetContentUseCase: UpdateWidgetContentUseCase;
   private deleteWidgetUseCase: DeleteWidgetUseCase;
   private widgetController: WidgetController;
@@ -24,6 +26,7 @@ class ApplicationContainer {
     // Application layer
     this.createWidgetUseCase = new CreateWidgetUseCase(this.widgetRepository);
     this.getAllWidgetsUseCase = new GetAllWidgetsUseCase(this.widgetRepository);
+    this.getSortedWidgetsUseCase = new GetSortedWidgetsUseCase(this.widgetRepository);
     this.updateWidgetContentUseCase = new UpdateWidgetContentUseCase(this.widgetRepository);
     this.deleteWidgetUseCase = new DeleteWidgetUseCase(this.widgetRepository);
     
@@ -31,6 +34,7 @@ class ApplicationContainer {
     this.widgetController = new WidgetController(
       this.createWidgetUseCase,
       this.getAllWidgetsUseCase,
+      this.getSortedWidgetsUseCase,
       this.updateWidgetContentUseCase,
       this.deleteWidgetUseCase
     );

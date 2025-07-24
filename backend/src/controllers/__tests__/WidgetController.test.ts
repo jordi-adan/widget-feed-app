@@ -5,6 +5,7 @@ import { CreateWidgetUseCase } from '../../application/CreateWidgetUseCase';
 import { GetAllWidgetsUseCase } from '../../application/GetAllWidgetsUseCase';
 import { UpdateWidgetContentUseCase } from '../../application/UpdateWidgetContentUseCase';
 import { DeleteWidgetUseCase } from '../../application/DeleteWidgetUseCase';
+import { GetSortedWidgetsUseCase } from '../../application/GetSortedWidgetsUseCase';
 import { InMemoryWidgetRepository } from '../../infrastructure/repositories/InMemoryWidgetRepository';
 
 describe('WidgetController', () => {
@@ -14,6 +15,7 @@ describe('WidgetController', () => {
   let getAllWidgetsUseCase: GetAllWidgetsUseCase;
   let updateWidgetContentUseCase: UpdateWidgetContentUseCase;
   let deleteWidgetUseCase: DeleteWidgetUseCase;
+  let getSortedWidgetsUseCase: GetSortedWidgetsUseCase;
   let widgetController: WidgetController;
 
   beforeEach(() => {
@@ -22,9 +24,11 @@ describe('WidgetController', () => {
     getAllWidgetsUseCase = new GetAllWidgetsUseCase(repository);
     updateWidgetContentUseCase = new UpdateWidgetContentUseCase(repository);
     deleteWidgetUseCase = new DeleteWidgetUseCase(repository);
+    getSortedWidgetsUseCase = new GetSortedWidgetsUseCase(repository);
     widgetController = new WidgetController(
       createWidgetUseCase, 
       getAllWidgetsUseCase,
+      getSortedWidgetsUseCase,
       updateWidgetContentUseCase,
       deleteWidgetUseCase
     );

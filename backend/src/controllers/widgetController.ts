@@ -101,7 +101,7 @@ export class WidgetController {
       if (result.success) {
         res.status(200).json({
           success: true,
-          widget: result.widget!.toPrimitive()
+          widget: result.widget ? result.widget.toPrimitive() : null
         });
       } else {
         const statusCode = result.error?.includes('not found') ? 404 : 400;

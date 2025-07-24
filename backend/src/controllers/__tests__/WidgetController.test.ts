@@ -4,6 +4,7 @@ import { WidgetController } from '../widgetController';
 import { CreateWidgetUseCase } from '../../application/CreateWidgetUseCase';
 import { GetAllWidgetsUseCase } from '../../application/GetAllWidgetsUseCase';
 import { UpdateWidgetContentUseCase } from '../../application/UpdateWidgetContentUseCase';
+import { DeleteWidgetUseCase } from '../../application/DeleteWidgetUseCase';
 import { InMemoryWidgetRepository } from '../../infrastructure/repositories/InMemoryWidgetRepository';
 
 describe('WidgetController', () => {
@@ -12,6 +13,7 @@ describe('WidgetController', () => {
   let createWidgetUseCase: CreateWidgetUseCase;
   let getAllWidgetsUseCase: GetAllWidgetsUseCase;
   let updateWidgetContentUseCase: UpdateWidgetContentUseCase;
+  let deleteWidgetUseCase: DeleteWidgetUseCase;
   let widgetController: WidgetController;
 
   beforeEach(() => {
@@ -19,10 +21,12 @@ describe('WidgetController', () => {
     createWidgetUseCase = new CreateWidgetUseCase(repository);
     getAllWidgetsUseCase = new GetAllWidgetsUseCase(repository);
     updateWidgetContentUseCase = new UpdateWidgetContentUseCase(repository);
+    deleteWidgetUseCase = new DeleteWidgetUseCase(repository);
     widgetController = new WidgetController(
       createWidgetUseCase, 
       getAllWidgetsUseCase,
-      updateWidgetContentUseCase
+      updateWidgetContentUseCase,
+      deleteWidgetUseCase
     );
 
     app = express();

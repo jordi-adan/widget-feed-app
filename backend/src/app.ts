@@ -1,9 +1,10 @@
-   import express from 'express';
+import express from 'express';
 import cors from 'cors';
 import { WidgetController } from './controllers/widgetController';
 import { CreateWidgetUseCase } from './application/CreateWidgetUseCase';
 import { GetAllWidgetsUseCase } from './application/GetAllWidgetsUseCase';
 import { UpdateWidgetContentUseCase } from './application/UpdateWidgetContentUseCase';
+import { DeleteWidgetUseCase } from './application/DeleteWidgetUseCase';
 import { InMemoryWidgetRepository } from './infrastructure/repositories/InMemoryWidgetRepository';
 
 // Dependency Injection Container (following Hexagonal Architecture)
@@ -13,6 +14,7 @@ class ApplicationContainer {
   private createWidgetUseCase: CreateWidgetUseCase;
   private getAllWidgetsUseCase: GetAllWidgetsUseCase;
   private updateWidgetContentUseCase: UpdateWidgetContentUseCase;
+  private deleteWidgetUseCase: DeleteWidgetUseCase;
   private widgetController: WidgetController;
 
   private constructor() {
@@ -23,12 +25,14 @@ class ApplicationContainer {
     this.createWidgetUseCase = new CreateWidgetUseCase(this.widgetRepository);
     this.getAllWidgetsUseCase = new GetAllWidgetsUseCase(this.widgetRepository);
     this.updateWidgetContentUseCase = new UpdateWidgetContentUseCase(this.widgetRepository);
+    this.deleteWidgetUseCase = new DeleteWidgetUseCase(this.widgetRepository);
     
     // Interface adapters layer
     this.widgetController = new WidgetController(
       this.createWidgetUseCase,
       this.getAllWidgetsUseCase,
-      this.updateWidgetContentUseCase
+      this.updateWidgetContentUseCase,
+      this.deleteWidgetUseCase
     );
   }
 

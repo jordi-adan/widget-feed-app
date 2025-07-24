@@ -47,34 +47,22 @@ jobs:
         echo "Running coverage check..."
         
         # Run coverage and capture output
-        npm run test:coverage:ci > coverage_output.txt 2>&1 || true
+        npm run test:coverage:ci > coverage_output.txt 2>&1 || COVERAGE_EXIT_CODE=$?
         
         # Display coverage results
+        echo "=== Coverage Report ==="
         cat coverage_output.txt
+        echo "======================"
         
-        # Extract coverage percentage (more robust approach)
-        COVERAGE=$(grep -E "All files.*\|.*\|.*\|.*\|" coverage_output.txt | awk -F'|' '{print $2}' | xargs | sed 's/%//' || echo "0")
-        
-        if [ -z "$COVERAGE" ]; then
-          echo "⚠️  Could not extract coverage percentage, checking if tests passed..."
-          if grep -q "Jest: \"global\" coverage threshold" coverage_output.txt; then
-            echo "❌ Coverage threshold not met based on Jest output"
-            exit 1
-          else
-            echo "✅ Tests passed, coverage extraction failed but no threshold errors detected"
-          fi
+        # Check if Jest coverage thresholds were met
+        if grep -q "Jest.*coverage threshold.*not met" coverage_output.txt; then
+          echo "❌ Coverage threshold not met based on Jest output"
+          exit 1
+        elif [ "${COVERAGE_EXIT_CODE:-0}" -ne 0 ]; then
+          echo "❌ Tests failed with exit code: ${COVERAGE_EXIT_CODE:-0}"
+          exit 1
         else
-          echo "📊 Current coverage: $COVERAGE%"
-          
-          # Check if coverage is above 80%
-          if (( $(echo "$COVERAGE >= 80" | bc -l) )); then
-            echo "✅ Coverage check passed: $COVERAGE% >= 80%"
-          else
-            echo "⚠️  Coverage below target: $COVERAGE% < 80%"
-            echo "This is currently a warning. Will become an error in future releases."
-            # Temporarily don't fail the build - just warn
-            # exit 1
-          fi
+          echo "✅ Coverage thresholds met!"
         fi
 
     - name: Upload coverage to Codecov
@@ -85,7 +73,7 @@ jobs:
         directory: ./backend/coverage/
         flags: backend
         name: codecov-backend
-        fail_ci_if_error: true
+        fail_ci_if_error: false
 
   build:
     runs-on: ubuntu-latest

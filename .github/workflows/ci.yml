@@ -209,48 +209,36 @@ jobs:
           // Calculate coverage progress
           const coverageNum = parseFloat(coveragePercent);
           const targetCoverage = 80;
-          const progressBar = '█'.repeat(Math.floor(coverageNum / 5)) + '░'.repeat(20 - Math.floor(coverageNum / 5));
+          const progressEmoji = coverageNum >= targetCoverage ? '✅' : '⚠️';
           const coverageStatus = coverageNum >= targetCoverage ? '✅ ACHIEVED' : `⚠️ ${Math.max(0, targetCoverage - Math.floor(coverageNum))}% to go`;
           
           // Get commit info
           const commit = context.sha.substring(0, 7);
-          const timestamp = new Date().toLocaleString('en-US', { 
-            timeZone: 'UTC', 
-            year: 'numeric', 
-            month: 'short', 
-            day: 'numeric', 
-            hour: '2-digit', 
-            minute: '2-digit' 
-          });
+          const timestamp = new Date().toISOString().split('T')[0];
           
           const comment = `## 🎉 CI/CD Pipeline Results
-          
-### 📊 **Test & Coverage Summary**
+
+### 📊 Test & Coverage Summary
 
 | Metric | Value | Status |
 |--------|-------|--------|
-| 🧪 **Tests** | ${totalTests}/28 | ✅ All Passing |
-| 📊 **Coverage** | ${coveragePercent}% | ${coverageStatus} |
-| 🎯 **Target** | 80% | ${coverageNum >= targetCoverage ? '✅' : '⚠️'} |
-| 🏗️ **Build** | TypeScript | ✅ Compiled |
-| 📦 **Artifacts** | Generated | ✅ Archived |
+| 🧪 Tests | ${totalTests}/28 | ✅ All Passing |
+| 📊 Coverage | ${coveragePercent}% | ${coverageStatus} |
+| 🎯 Target | 80% | ${progressEmoji} |
+| 🏗️ Build | TypeScript | ✅ Compiled |
+| 📦 Artifacts | Generated | ✅ Archived |
 
-### 📈 **Coverage Progress**
-\`\`\`
-${progressBar} ${coveragePercent}%
-\`\`\`
-
-### 🔧 **Environment Details**
-- **Node.js**: 18.x ✅ | 20.x ✅
+### 🔧 Environment Details
+- **Node.js**: 18.x ✅ | 20.x ✅  
 - **Platform**: Ubuntu Latest
 - **Commit**: \`${commit}\`
-- **Built**: ${timestamp} UTC
+- **Built**: ${timestamp}
 - **PR**: #${{ github.event.number }}
 
-### 🚀 **Deployment Status**
+### 🚀 Status
 ${coverageNum >= targetCoverage ? '🟢 **READY FOR MERGE**' : '🟡 **NEEDS MORE COVERAGE**'}
 
-All quality gates have been passed! This PR is ready for review and deployment.
+All quality gates have been passed! This PR is ready for review.
 
 ---
 *Automated by GitHub Actions CI/CD Pipeline* ⚙️`;

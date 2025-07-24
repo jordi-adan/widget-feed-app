@@ -1,0 +1,141 @@
+.base-widget {
+  margin: 16px 0;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.base-widget:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Widget type specific styling */
+.base-widget--expandable_list {
+  border-left: 4px solid #3b82f6;
+}
+
+.base-widget--horizontal_cards {
+  border-left: 4px solid #10b981;
+}
+
+.base-widget--image_list {
+  border-left: 4px solid #f59e0b;
+}
+
+.base-widget--text_block {
+  border-left: 4px solid #8b5cf6;
+}
+
+.base-widget--highlight_banner {
+  border-left: 4px solid #ef4444;
+  background: linear-gradient(135deg, #fee2e2 0%, #ffffff 100%);
+}
+
+.base-widget--quick_actions {
+  border-left: 4px solid #06b6d4;
+}
+
+/* Error states */
+.widget-error {
+  padding: 20px;
+  text-align: center;
+  color: #dc2626;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.error-retry {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.error-icon {
+  font-size: 18px;
+}
+
+.retry-button {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.retry-button:hover {
+  background: #2563eb;
+}
+
+.retry-button:active {
+  transform: translateY(1px);
+}
+
+/* Loading skeleton */
+.widget-skeleton {
+  padding: 20px;
+}
+
+.skeleton-line {
+  height: 16px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.skeleton-line:last-child {
+  margin-bottom: 0;
+  width: 60%;
+}
+
+.skeleton-circle {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 50%;
+  margin-bottom: 12px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .base-widget {
+    margin: 12px 0;
+    border-radius: 8px;
+  }
+  
+  .widget-error {
+    padding: 16px;
+  }
+  
+  .error-retry {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

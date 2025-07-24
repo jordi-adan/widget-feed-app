@@ -1,16 +1,16 @@
    import React from 'react';
 import './App.css';
-import { WidgetFeed } from './components/WidgetFeed';
+import { NewWidgetFeed } from './components/NewWidgetFeed';
 
 function App() {
   return (
     <div className="App">
       <header className="app-header">
         <h1>🎛️ Widget Feed</h1>
-        <p>Create and manage your widgets</p>
+        <p>PRD-Compliant Single-Screen Widget Application</p>
       </header>
       <main className="app-main">
-        <WidgetFeed />
+        <NewWidgetFeed />
       </main>
     </div>
   );

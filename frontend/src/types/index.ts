@@ -1,16 +1,64 @@
-   // Widget Types
-export type WidgetType = 'text' | 'image' | 'video' | 'link' | 'chart';
+   // PRD-Compliant Widget Types (Updated to match backend)
+export type WidgetType = 'expandable_list' | 'horizontal_cards' | 'image_list' | 
+                         'text_block' | 'highlight_banner' | 'quick_actions';
 
-export interface Widget {
+export type ContentType = 'static' | 'dynamic';
+
+export type LoadingState = 'skeleton' | 'hidden';
+export type ErrorState = 'hidden' | 'message' | 'retry';
+
+// Core Widget Descriptor Interface (matches backend)
+export interface WidgetDescriptor {
   id: string;
-  type: WidgetType;
+  type: ContentType;
+  widgetType: WidgetType;
+  config: StaticConfig | DynamicConfig;
+}
+
+// Configuration Types
+export interface StaticConfig {
+  staticContent: Record<string, any>;
+}
+
+export interface DynamicConfig {
+  dataUrl: string;
+  loadingState: LoadingState;
+  errorState: ErrorState;
+}
+
+// API Response Types
+export interface GetWidgetsResponse {
+  widgets: WidgetDescriptor[];
+}
+
+export interface CreateWidgetDescriptorRequest {
+  widgetType: WidgetType;
+  contentType: ContentType;
+  dataUrl?: string;
+  loadingState?: LoadingState;
+  errorState?: ErrorState;
+  staticContent?: Record<string, any>;
+}
+
+// Legacy Types (for backward compatibility during migration)
+export type LegacyWidgetType = 'text' | 'image' | 'video' | 'link' | 'chart';
+
+export interface LegacyWidget {
+  id: string;
+  type: LegacyWidgetType;
   content: string;
   timestamp: string;
 }
 
-// API Request/Response Types
+// Legacy API Types (for backward compatibility)
+export interface ApiResponse<T = any> {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
+
 export interface CreateWidgetRequest {
-  type: WidgetType;
+  type: LegacyWidgetType;
   content: string;
 }
 
@@ -18,37 +66,31 @@ export interface UpdateWidgetRequest {
   content: string;
 }
 
-export interface ApiResponse<T = any> {
-  success: boolean;
-  data?: T;
-  error?: string;
-}
-
 export interface CreateWidgetResponse extends ApiResponse {
-  widget?: Widget;
+  widget?: LegacyWidget;
 }
 
 export interface UpdateWidgetResponse extends ApiResponse {
-  widget?: Widget;
+  widget?: LegacyWidget;
 }
 
 export interface GetAllWidgetsResponse extends ApiResponse {
-  widgets?: Widget[];
+  widgets?: LegacyWidget[];
 }
 
 export interface DeleteWidgetResponse extends ApiResponse {
   message?: string;
 }
 
-// Sorting Types
+export interface GetSortedWidgetsResponse extends ApiResponse {
+  widgets?: LegacyWidget[];
+}
+
+// Sorting Types (legacy)
 export type SortField = 'timestamp' | 'type';
 export type SortOrder = 'asc' | 'desc';
 
 export interface GetSortedWidgetsRequest {
   sortBy?: SortField;
   sortOrder?: SortOrder;
-}
-
-export interface GetSortedWidgetsResponse extends ApiResponse {
-  widgets?: Widget[];
 }

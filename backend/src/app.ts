@@ -1,34 +1,47 @@
 import express from 'express';
 import cors from 'cors';
 import { WidgetController } from './controllers/widgetController';
+import { WidgetDescriptorController } from './controllers/WidgetDescriptorController';
 import { CreateWidgetUseCase } from './application/CreateWidgetUseCase';
 import { GetAllWidgetsUseCase } from './application/GetAllWidgetsUseCase';
 import { GetSortedWidgetsUseCase } from './application/GetSortedWidgetsUseCase';
 import { UpdateWidgetContentUseCase } from './application/UpdateWidgetContentUseCase';
 import { DeleteWidgetUseCase } from './application/DeleteWidgetUseCase';
+import { CreateWidgetDescriptorUseCase } from './application/CreateWidgetDescriptorUseCase';
+import { GetAllWidgetDescriptorsUseCase } from './application/GetAllWidgetDescriptorsUseCase';
 import { InMemoryWidgetRepository } from './infrastructure/repositories/InMemoryWidgetRepository';
+import { InMemoryWidgetDescriptorRepository } from './infrastructure/repositories/InMemoryWidgetDescriptorRepository';
 
 // Dependency Injection Container (following Hexagonal Architecture)
 class ApplicationContainer {
   private static instance: ApplicationContainer;
   private widgetRepository: InMemoryWidgetRepository;
+  private widgetDescriptorRepository: InMemoryWidgetDescriptorRepository;
   private createWidgetUseCase: CreateWidgetUseCase;
   private getAllWidgetsUseCase: GetAllWidgetsUseCase;
   private getSortedWidgetsUseCase: GetSortedWidgetsUseCase;
   private updateWidgetContentUseCase: UpdateWidgetContentUseCase;
   private deleteWidgetUseCase: DeleteWidgetUseCase;
+  private createWidgetDescriptorUseCase: CreateWidgetDescriptorUseCase;
+  private getAllWidgetDescriptorsUseCase: GetAllWidgetDescriptorsUseCase;
   private widgetController: WidgetController;
+  private widgetDescriptorController: WidgetDescriptorController;
 
   private constructor() {
     // Infrastructure layer
     this.widgetRepository = new InMemoryWidgetRepository();
+    this.widgetDescriptorRepository = new InMemoryWidgetDescriptorRepository();
     
-    // Application layer
+    // Application layer - Widget use cases
     this.createWidgetUseCase = new CreateWidgetUseCase(this.widgetRepository);
     this.getAllWidgetsUseCase = new GetAllWidgetsUseCase(this.widgetRepository);
     this.getSortedWidgetsUseCase = new GetSortedWidgetsUseCase(this.widgetRepository);
     this.updateWidgetContentUseCase = new UpdateWidgetContentUseCase(this.widgetRepository);
     this.deleteWidgetUseCase = new DeleteWidgetUseCase(this.widgetRepository);
+    
+    // Application layer - WidgetDescriptor use cases (PRD-compliant)
+    this.createWidgetDescriptorUseCase = new CreateWidgetDescriptorUseCase(this.widgetDescriptorRepository);
+    this.getAllWidgetDescriptorsUseCase = new GetAllWidgetDescriptorsUseCase(this.widgetDescriptorRepository);
     
     // Interface adapters layer
     this.widgetController = new WidgetController(
@@ -37,6 +50,11 @@ class ApplicationContainer {
       this.getSortedWidgetsUseCase,
       this.updateWidgetContentUseCase,
       this.deleteWidgetUseCase
+    );
+    
+    this.widgetDescriptorController = new WidgetDescriptorController(
+      this.createWidgetDescriptorUseCase,
+      this.getAllWidgetDescriptorsUseCase
     );
   }
 
@@ -49,6 +67,10 @@ class ApplicationContainer {
 
   public getWidgetController(): WidgetController {
     return this.widgetController;
+  }
+
+  public getWidgetDescriptorController(): WidgetDescriptorController {
+    return this.widgetDescriptorController;
   }
 }
 
@@ -67,6 +89,11 @@ app.get('/health', (req, res) => {
 
 // API Routes
 const container = ApplicationContainer.getInstance();
+
+// PRD-compliant routes - Widget Descriptors (main API for frontend)
+app.use('/widgets', container.getWidgetDescriptorController().getRouter());
+
+// Legacy routes - Internal Widget management 
 app.use('/api/widgets', container.getWidgetController().getRouter());
 
 // Error handling middleware
@@ -90,7 +117,8 @@ app.use('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Widget Feed API Server is running on http://localhost:${PORT}`);
   console.log(`📊 Health check available at http://localhost:${PORT}/health`);
-  console.log(`🔗 API endpoints available at http://localhost:${PORT}/api/widgets`);
+  console.log(`🎯 PRD Widget API at http://localhost:${PORT}/widgets`);
+  console.log(`🔗 Legacy Widget API at http://localhost:${PORT}/api/widgets`);
 });
 
 export default app;

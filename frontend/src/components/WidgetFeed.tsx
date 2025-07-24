@@ -3,11 +3,11 @@ import './WidgetFeed.css';
 import { WidgetItem } from './WidgetItem';
 import { CreateWidgetForm } from './CreateWidgetForm';
 import { SortControls } from './SortControls';
-import { Widget, WidgetType, SortField, SortOrder } from '../types';
+import { LegacyWidget, LegacyWidgetType, SortField, SortOrder } from '../types';
 import { widgetApi } from '../services/widgetApi';
 
 export const WidgetFeed: React.FC = () => {
-  const [widgets, setWidgets] = useState<Widget[]>([]);
+  const [widgets, setWidgets] = useState<LegacyWidget[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -37,7 +37,7 @@ export const WidgetFeed: React.FC = () => {
     setSortOrder(newSortOrder);
   };
 
-  const handleCreateWidget = async (type: WidgetType, content: string) => {
+  const handleCreateWidget = async (type: LegacyWidgetType, content: string) => {
     try {
       setError(null);
       const response = await widgetApi.createWidget({ type, content });

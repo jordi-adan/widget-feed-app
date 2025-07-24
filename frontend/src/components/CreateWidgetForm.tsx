@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { WidgetType } from '../types';
+import { LegacyWidgetType } from '../types';
 import './CreateWidgetForm.css';
 
 interface CreateWidgetFormProps {
-  onSubmit: (type: WidgetType, content: string) => void;
+  onSubmit: (type: LegacyWidgetType, content: string) => void;
   onCancel: () => void;
 }
 
-const WIDGET_TYPES: { value: WidgetType; label: string; placeholder: string }[] = [
+const WIDGET_TYPES: { value: LegacyWidgetType; label: string; placeholder: string }[] = [
   { value: 'text', label: '📝 Text', placeholder: 'Enter your text content...' },
   { value: 'image', label: '🖼️ Image', placeholder: 'Enter image URL or description...' },
   { value: 'video', label: '🎥 Video', placeholder: 'Enter video URL or description...' },
@@ -16,7 +16,7 @@ const WIDGET_TYPES: { value: WidgetType; label: string; placeholder: string }[] 
 ];
 
 export const CreateWidgetForm: React.FC<CreateWidgetFormProps> = ({ onSubmit, onCancel }) => {
-  const [selectedType, setSelectedType] = useState<WidgetType>('text');
+  const [selectedType, setSelectedType] = useState<LegacyWidgetType>('text');
   const [content, setContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -48,7 +48,7 @@ export const CreateWidgetForm: React.FC<CreateWidgetFormProps> = ({ onSubmit, on
           <select
             id="widget-type"
             value={selectedType}
-            onChange={(e) => setSelectedType(e.target.value as WidgetType)}
+            onChange={(e) => setSelectedType(e.target.value as LegacyWidgetType)}
             className="widget-type-select"
           >
             {WIDGET_TYPES.map(type => (

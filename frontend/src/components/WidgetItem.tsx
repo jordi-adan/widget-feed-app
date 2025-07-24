@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Widget } from '../types';
+import { LegacyWidget } from '../types';
 import './WidgetItem.css';
 
 interface WidgetItemProps {
-  widget: Widget;
+  widget: LegacyWidget;
   onUpdate: (id: string, content: string) => void;
   onDelete: (id: string) => void;
 }

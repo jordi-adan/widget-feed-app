@@ -1,7 +1,8 @@
-   import { Router, Request, Response } from 'express';
+   import { Request, Response, Router } from 'express';
 import { CreateWidgetUseCase } from '../application/CreateWidgetUseCase';
 import { GetAllWidgetsUseCase } from '../application/GetAllWidgetsUseCase';
 import { UpdateWidgetContentUseCase } from '../application/UpdateWidgetContentUseCase';
+import { WidgetErrorCode } from '../domain/errors/WidgetErrors';
 
 export class WidgetController {
   private router: Router;
@@ -104,7 +105,7 @@ export class WidgetController {
           widget: result.widget ? result.widget.toPrimitive() : null
         });
       } else {
-        const statusCode = result.error?.includes('not found') ? 404 : 400;
+        const statusCode = result.errorCode === WidgetErrorCode.WIDGET_NOT_FOUND ? 404 : 400;
         res.status(statusCode).json({
           success: false,
           error: result.error

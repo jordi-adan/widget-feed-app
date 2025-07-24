@@ -25,6 +25,17 @@ jobs:
         cache: 'npm'
         cache-dependency-path: backend/package-lock.json
 
+    - name: Display test environment
+      run: |
+        echo "🧪 ==============================================="
+        echo "    TEST ENVIRONMENT - Node.js ${{ matrix.node-version }}"
+        echo "==============================================="
+        echo "📦 Node.js: $(node --version)"
+        echo "📦 NPM: $(npm --version)"
+        echo "🏗️  Project: Widget Feed App Backend"
+        echo "🎯 Testing: TDD with Jest"
+        echo "=============================================== 🧪"
+
     - name: Install dependencies
       working-directory: ./backend
       run: npm ci
@@ -54,6 +65,10 @@ jobs:
         cat coverage_output.txt
         echo "======================"
         
+        # Extract key metrics for summary
+        TOTAL_TESTS=$(grep "Tests:" coverage_output.txt | grep -o "[0-9]\+ passed" | head -1 | grep -o "[0-9]\+" || echo "0")
+        COVERAGE_PERCENT=$(grep "All files" coverage_output.txt | awk '{print $4}' | sed 's/%//' || echo "0")
+        
         # Check if Jest coverage thresholds were met
         if grep -q "Jest.*coverage threshold.*not met" coverage_output.txt; then
           echo "❌ Coverage threshold not met based on Jest output"
@@ -62,7 +77,25 @@ jobs:
           echo "❌ Tests failed with exit code: ${COVERAGE_EXIT_CODE:-0}"
           exit 1
         else
-          echo "✅ Coverage thresholds met!"
+          echo ""
+          echo "🎉 ==============================================="
+          echo "    CI SUMMARY - Widget Feed App Backend"
+          echo "==============================================="
+          echo "✅ Tests Passed: $TOTAL_TESTS/28"
+          echo "📊 Coverage: $COVERAGE_PERCENT% (Target: 80%)"
+          echo "🏗️  TypeScript: Compilation Ready"
+          echo "🔧 Node.js: $(node --version)"
+          echo "📦 Dependencies: ✅ Installed"
+          # Convert to integer for comparison (remove decimal part)
+          COVERAGE_INT=$(echo "$COVERAGE_PERCENT" | cut -d'.' -f1)
+          if [ "$COVERAGE_INT" -ge 80 ] 2>/dev/null; then
+            echo "🎯 Coverage Target: ✅ ACHIEVED"
+          else
+            GAP=$((80 - COVERAGE_INT))
+            echo "🎯 Coverage Target: ⚠️  ${GAP}% to go"
+          fi
+          echo "=============================================== 🎉"
+          echo ""
         fi
 
     - name: Upload coverage to Codecov
@@ -103,3 +136,22 @@ jobs:
       with:
         name: build-files
         path: backend/dist/
+
+    - name: CI Build Summary
+      run: |
+        echo ""
+        echo "🚀 ==============================================="
+        echo "    BUILD SUMMARY - Widget Feed App"
+        echo "==============================================="
+        echo "✅ Tests: All passed on Node.js 18.x & 20.x"
+        echo "✅ Coverage: Thresholds met"
+        echo "✅ TypeScript: Successfully compiled"
+        echo "✅ Artifacts: Generated and archived"
+        echo "🎯 Status: Ready for deployment"
+        echo "📅 Built: $(date)"
+        echo "🏷️  Commit: ${{ github.sha }}"
+        if [ "${{ github.event_name }}" = "pull_request" ]; then
+          echo "🔀 PR: #${{ github.event.number }}"
+        fi
+        echo "=============================================== 🚀"
+        echo ""

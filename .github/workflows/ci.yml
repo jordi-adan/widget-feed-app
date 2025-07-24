@@ -181,16 +181,14 @@ jobs:
 
     - name: Generate coverage report
       working-directory: ./backend
-      run: |
-        npm test -- --coverage --coverageReporters=text > coverage_summary.txt 2>&1 || true
+      run: npm test -- --coverage --coverageReporters=text > coverage_summary.txt 2>&1 || true
         
-    - name: Extract metrics and post PR comment
+    - name: Post PR Comment
       uses: actions/github-script@v7
       with:
         script: |
           const fs = require('fs');
           
-          // Read coverage output
           let coverageText = '';
           try {
             coverageText = fs.readFileSync('./backend/coverage_summary.txt', 'utf8');
@@ -198,52 +196,46 @@ jobs:
             coverageText = 'Coverage data not available';
           }
           
-          // Extract test count
           const testMatch = coverageText.match(/Tests:\s+(\d+)\s+passed/);
           const totalTests = testMatch ? testMatch[1] : '0';
           
-          // Extract coverage percentage
           const coverageMatch = coverageText.match(/All files\s+\|\s+([\d.]+)/);
           const coveragePercent = coverageMatch ? coverageMatch[1] : '0';
           
-          // Calculate coverage progress
           const coverageNum = parseFloat(coveragePercent);
           const targetCoverage = 80;
-          const progressEmoji = coverageNum >= targetCoverage ? '✅' : '⚠️';
-          const coverageStatus = coverageNum >= targetCoverage ? '✅ ACHIEVED' : `⚠️ ${Math.max(0, targetCoverage - Math.floor(coverageNum))}% to go`;
+          const status = coverageNum >= targetCoverage ? 'READY FOR MERGE' : 'NEEDS MORE COVERAGE';
+          const emoji = coverageNum >= targetCoverage ? '🟢' : '🟡';
           
-          // Get commit info
           const commit = context.sha.substring(0, 7);
-          const timestamp = new Date().toISOString().split('T')[0];
           
-          const comment = `## 🎉 CI/CD Pipeline Results
+          const comment = [
+            '## 🎉 CI/CD Pipeline Results',
+            '',
+            '### 📊 Test & Coverage Summary',
+            '',
+            '| Metric | Value | Status |',
+            '|--------|-------|--------|',
+            `| 🧪 Tests | ${totalTests}/28 | ✅ All Passing |`,
+            `| 📊 Coverage | ${coveragePercent}% | ${coverageNum >= 80 ? '✅' : '⚠️'} |`,
+            '| 🎯 Target | 80% | ' + (coverageNum >= 80 ? '✅' : '⚠️') + ' |',
+            '| 🏗️ Build | TypeScript | ✅ Compiled |',
+            '| 📦 Artifacts | Generated | ✅ Archived |',
+            '',
+            '### 🔧 Environment Details',
+            '- **Node.js**: 18.x ✅ | 20.x ✅',
+            '- **Platform**: Ubuntu Latest',
+            `- **Commit**: \`${commit}\``,
+            `- **PR**: #${{ github.event.number }}`,
+            '',
+            `### 🚀 Status: ${emoji} **${status}**`,
+            '',
+            'All quality gates have been passed! This PR is ready for review.',
+            '',
+            '---',
+            '*Automated by GitHub Actions CI/CD Pipeline* ⚙️'
+          ].join('\n');
 
-### 📊 Test & Coverage Summary
-
-| Metric | Value | Status |
-|--------|-------|--------|
-| 🧪 Tests | ${totalTests}/28 | ✅ All Passing |
-| 📊 Coverage | ${coveragePercent}% | ${coverageStatus} |
-| 🎯 Target | 80% | ${progressEmoji} |
-| 🏗️ Build | TypeScript | ✅ Compiled |
-| 📦 Artifacts | Generated | ✅ Archived |
-
-### 🔧 Environment Details
-- **Node.js**: 18.x ✅ | 20.x ✅  
-- **Platform**: Ubuntu Latest
-- **Commit**: \`${commit}\`
-- **Built**: ${timestamp}
-- **PR**: #${{ github.event.number }}
-
-### 🚀 Status
-${coverageNum >= targetCoverage ? '🟢 **READY FOR MERGE**' : '🟡 **NEEDS MORE COVERAGE**'}
-
-All quality gates have been passed! This PR is ready for review.
-
----
-*Automated by GitHub Actions CI/CD Pipeline* ⚙️`;
-
-          // Post the comment
           github.rest.issues.createComment({
             issue_number: context.issue.number,
             owner: context.repo.owner,

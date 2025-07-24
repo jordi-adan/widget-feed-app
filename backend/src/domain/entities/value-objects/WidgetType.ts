@@ -1,5 +1,8 @@
 export class WidgetType {
-  private static readonly VALID_TYPES = ['text', 'image', 'video', 'link', 'chart'] as const;
+  private static readonly VALID_TYPES = [
+    'text', 'image', 'video', 'link', 'chart',
+    'expandable_list', 'horizontal_cards', 'image_list', 'text_block', 'highlight_banner', 'quick_actions'
+  ] as const;
   
   private constructor(private readonly value: string) {
     this.ensureValidType(value);
@@ -35,6 +38,30 @@ export class WidgetType {
 
   public isChart(): boolean {
     return this.value === 'chart';
+  }
+
+  public isExpandableList(): boolean {
+    return this.value === 'expandable_list';
+  }
+
+  public isHorizontalCards(): boolean {
+    return this.value === 'horizontal_cards';
+  }
+
+  public isImageList(): boolean {
+    return this.value === 'image_list';
+  }
+
+  public isTextBlock(): boolean {
+    return this.value === 'text_block';
+  }
+
+  public isHighlightBanner(): boolean {
+    return this.value === 'highlight_banner';
+  }
+
+  public isQuickActions(): boolean {
+    return this.value === 'quick_actions';
   }
 
   private ensureValidType(value: string): void {

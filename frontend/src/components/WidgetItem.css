@@ -1,0 +1,231 @@
+.widget-item {
+  background: white;
+  border: 1px solid #e1e5e9;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+}
+
+.widget-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.widget-type {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.widget-icon {
+  font-size: 18px;
+}
+
+.widget-type-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #6b7280;
+  letter-spacing: 0.5px;
+}
+
+.widget-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.widget-timestamp {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.widget-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.edit-btn,
+.delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.edit-btn:hover {
+  background-color: #f3f4f6;
+}
+
+.delete-btn:hover {
+  background-color: #fef2f2;
+}
+
+.edit-btn:disabled,
+.delete-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.widget-content {
+  position: relative;
+}
+
+.view-mode {
+  line-height: 1.5;
+  color: #374151;
+  word-wrap: break-word;
+}
+
+.widget-link {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.widget-link:hover {
+  text-decoration: underline;
+}
+
+.edit-mode {
+  margin-top: 8px;
+}
+
+.edit-textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.edit-textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.character-count {
+  font-size: 12px;
+  color: #6b7280;
+  text-align: right;
+  margin-top: 4px;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.delete-confirmation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  z-index: 10;
+}
+
+.delete-confirmation-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  min-width: 300px;
+  text-align: center;
+}
+
+.delete-confirmation-content p {
+  margin: 0 0 16px 0;
+  color: #374151;
+  font-weight: 500;
+}
+
+.delete-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+.btn-secondary {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: #e5e7eb;
+}
+
+.btn-danger {
+  background-color: #dc2626;
+  color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: #b91c1c;
+}
+
+/* Widget type specific styles */
+.widget-text {
+  border-left: 4px solid #3b82f6;
+}
+
+.widget-image {
+  border-left: 4px solid #10b981;
+}
+
+.widget-video {
+  border-left: 4px solid #8b5cf6;
+}
+
+.widget-link {
+  border-left: 4px solid #f59e0b;
+}
+
+.widget-chart {
+  border-left: 4px solid #ef4444;
+}

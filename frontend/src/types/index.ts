@@ -35,3 +35,7 @@ export interface UpdateWidgetResponse extends ApiResponse {
 export interface GetAllWidgetsResponse extends ApiResponse {
   widgets?: Widget[];
 }
+
+export interface DeleteWidgetResponse extends ApiResponse {
+  message?: string;
+}

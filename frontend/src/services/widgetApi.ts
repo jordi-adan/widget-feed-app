@@ -1,4 +1,4 @@
-import { CreateWidgetRequest, CreateWidgetResponse, GetAllWidgetsResponse, UpdateWidgetRequest, UpdateWidgetResponse } from '../types';
+import { CreateWidgetRequest, CreateWidgetResponse, GetAllWidgetsResponse, UpdateWidgetRequest, UpdateWidgetResponse, DeleteWidgetResponse } from '../types';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
 
@@ -47,6 +47,12 @@ class WidgetApiService {
     return this.request<UpdateWidgetResponse>(`/widgets/${id}`, {
       method: 'PUT',
       body: JSON.stringify(update),
+    });
+  }
+
+  async deleteWidget(id: string): Promise<DeleteWidgetResponse> {
+    return this.request<DeleteWidgetResponse>(`/widgets/${id}`, {
+      method: 'DELETE',
     });
   }
 }

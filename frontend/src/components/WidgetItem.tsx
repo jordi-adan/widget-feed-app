@@ -5,6 +5,7 @@ import './WidgetItem.css';
 interface WidgetItemProps {
   widget: Widget;
   onUpdate: (id: string, content: string) => void;
+  onDelete: (id: string) => void;
 }
 
 const getWidgetIcon = (type: string): string => {
@@ -34,10 +35,12 @@ const formatTimestamp = (timestamp: string): string => {
   }
 };
 
-export const WidgetItem: React.FC<WidgetItemProps> = ({ widget, onUpdate }) => {
+export const WidgetItem: React.FC<WidgetItemProps> = ({ widget, onUpdate, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(widget.content);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleSaveEdit = async () => {
     if (editContent.trim() === widget.content) {
@@ -57,6 +60,24 @@ export const WidgetItem: React.FC<WidgetItemProps> = ({ widget, onUpdate }) => {
   const handleCancelEdit = () => {
     setEditContent(widget.content);
     setIsEditing(false);
+  };
+
+  const handleDeleteClick = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await onDelete(widget.id);
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteConfirm(false);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteConfirm(false);
   };
 
   const renderContent = () => {
@@ -85,13 +106,24 @@ export const WidgetItem: React.FC<WidgetItemProps> = ({ widget, onUpdate }) => {
         </div>
         <div className="widget-meta">
           <span className="widget-timestamp">{formatTimestamp(widget.timestamp)}</span>
-          <button
-            className="edit-btn"
-            onClick={() => setIsEditing(true)}
-            disabled={isEditing}
-          >
-            ✏️
-          </button>
+          <div className="widget-actions">
+            <button
+              className="edit-btn"
+              onClick={() => setIsEditing(true)}
+              disabled={isEditing || showDeleteConfirm}
+              title="Edit widget"
+            >
+              ✏️
+            </button>
+            <button
+              className="delete-btn"
+              onClick={handleDeleteClick}
+              disabled={isEditing || showDeleteConfirm || isDeleting}
+              title="Delete widget"
+            >
+              🗑️
+            </button>
+          </div>
         </div>
       </div>
 
@@ -131,6 +163,30 @@ export const WidgetItem: React.FC<WidgetItemProps> = ({ widget, onUpdate }) => {
           </div>
         )}
       </div>
+
+      {showDeleteConfirm && (
+        <div className="delete-confirmation">
+          <div className="delete-confirmation-content">
+            <p>Are you sure you want to delete this widget?</p>
+            <div className="delete-actions">
+              <button
+                onClick={handleCancelDelete}
+                className="btn btn-secondary"
+                disabled={isDeleting}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmDelete}
+                className="btn btn-danger"
+                disabled={isDeleting}
+              >
+                {isDeleting ? 'Deleting...' : 'Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

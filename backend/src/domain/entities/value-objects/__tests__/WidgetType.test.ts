@@ -3,7 +3,10 @@ import { WidgetType } from '../WidgetType';
 describe('WidgetType', () => {
   describe('create', () => {
     it('should create valid widget types', () => {
-      const validTypes = ['text', 'image', 'video', 'link', 'chart'];
+      const validTypes = [
+        'text', 'image', 'video', 'link', 'chart',
+        'expandable_list', 'horizontal_cards', 'image_list', 'text_block', 'highlight_banner', 'quick_actions'
+      ];
       
       validTypes.forEach(type => {
         const widgetType = WidgetType.create(type);
@@ -156,8 +159,70 @@ describe('WidgetType', () => {
     });
   });
 
+  describe('new widget types for dynamic feed', () => {
+    describe('expandable_list', () => {
+      it('should create expandable_list widget type', () => {
+        const widgetType = WidgetType.create('expandable_list');
+        
+        expect(widgetType.getValue()).toBe('expandable_list');
+        expect(widgetType.isExpandableList()).toBe(true);
+        expect(widgetType.isHorizontalCards()).toBe(false);
+      });
+    });
+
+    describe('horizontal_cards', () => {
+      it('should create horizontal_cards widget type', () => {
+        const widgetType = WidgetType.create('horizontal_cards');
+        
+        expect(widgetType.getValue()).toBe('horizontal_cards');
+        expect(widgetType.isHorizontalCards()).toBe(true);
+        expect(widgetType.isExpandableList()).toBe(false);
+      });
+    });
+
+    describe('image_list', () => {
+      it('should create image_list widget type', () => {
+        const widgetType = WidgetType.create('image_list');
+        
+        expect(widgetType.getValue()).toBe('image_list');
+        expect(widgetType.isImageList()).toBe(true);
+        expect(widgetType.isTextBlock()).toBe(false);
+      });
+    });
+
+    describe('text_block', () => {
+      it('should create text_block widget type', () => {
+        const widgetType = WidgetType.create('text_block');
+        
+        expect(widgetType.getValue()).toBe('text_block');
+        expect(widgetType.isTextBlock()).toBe(true);
+        expect(widgetType.isImageList()).toBe(false);
+      });
+    });
+
+    describe('highlight_banner', () => {
+      it('should create highlight_banner widget type', () => {
+        const widgetType = WidgetType.create('highlight_banner');
+        
+        expect(widgetType.getValue()).toBe('highlight_banner');
+        expect(widgetType.isHighlightBanner()).toBe(true);
+        expect(widgetType.isQuickActions()).toBe(false);
+      });
+    });
+
+    describe('quick_actions', () => {
+      it('should create quick_actions widget type', () => {
+        const widgetType = WidgetType.create('quick_actions');
+        
+        expect(widgetType.getValue()).toBe('quick_actions');
+        expect(widgetType.isQuickActions()).toBe(true);
+        expect(widgetType.isHighlightBanner()).toBe(false);
+      });
+    });
+  });
+
   describe('integration tests', () => {
-    it('should handle all type checking methods correctly for each type', () => {
+    it('should handle all legacy type checking methods correctly for each type', () => {
       const typeChecks = [
         { type: 'text', checks: { isText: true, isImage: false, isVideo: false, isLink: false, isChart: false } },
         { type: 'image', checks: { isText: false, isImage: true, isVideo: false, isLink: false, isChart: false } },
@@ -174,6 +239,88 @@ describe('WidgetType', () => {
         expect(widgetType.isVideo()).toBe(checks.isVideo);
         expect(widgetType.isLink()).toBe(checks.isLink);
         expect(widgetType.isChart()).toBe(checks.isChart);
+      });
+    });
+
+    it('should handle all new type checking methods correctly for each type', () => {
+      const newTypeChecks = [
+        { 
+          type: 'expandable_list', 
+          checks: { 
+            isExpandableList: true, 
+            isHorizontalCards: false, 
+            isImageList: false, 
+            isTextBlock: false, 
+            isHighlightBanner: false, 
+            isQuickActions: false 
+          } 
+        },
+        { 
+          type: 'horizontal_cards', 
+          checks: { 
+            isExpandableList: false, 
+            isHorizontalCards: true, 
+            isImageList: false, 
+            isTextBlock: false, 
+            isHighlightBanner: false, 
+            isQuickActions: false 
+          } 
+        },
+        { 
+          type: 'image_list', 
+          checks: { 
+            isExpandableList: false, 
+            isHorizontalCards: false, 
+            isImageList: true, 
+            isTextBlock: false, 
+            isHighlightBanner: false, 
+            isQuickActions: false 
+          } 
+        },
+        { 
+          type: 'text_block', 
+          checks: { 
+            isExpandableList: false, 
+            isHorizontalCards: false, 
+            isImageList: false, 
+            isTextBlock: true, 
+            isHighlightBanner: false, 
+            isQuickActions: false 
+          } 
+        },
+        { 
+          type: 'highlight_banner', 
+          checks: { 
+            isExpandableList: false, 
+            isHorizontalCards: false, 
+            isImageList: false, 
+            isTextBlock: false, 
+            isHighlightBanner: true, 
+            isQuickActions: false 
+          } 
+        },
+        { 
+          type: 'quick_actions', 
+          checks: { 
+            isExpandableList: false, 
+            isHorizontalCards: false, 
+            isImageList: false, 
+            isTextBlock: false, 
+            isHighlightBanner: false, 
+            isQuickActions: true 
+          } 
+        }
+      ];
+
+      newTypeChecks.forEach(({ type, checks }) => {
+        const widgetType = WidgetType.create(type);
+        
+        expect(widgetType.isExpandableList()).toBe(checks.isExpandableList);
+        expect(widgetType.isHorizontalCards()).toBe(checks.isHorizontalCards);
+        expect(widgetType.isImageList()).toBe(checks.isImageList);
+        expect(widgetType.isTextBlock()).toBe(checks.isTextBlock);
+        expect(widgetType.isHighlightBanner()).toBe(checks.isHighlightBanner);
+        expect(widgetType.isQuickActions()).toBe(checks.isQuickActions);
       });
     });
   });

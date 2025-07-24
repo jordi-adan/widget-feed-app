@@ -1,0 +1,155 @@
+/* Sort Controls Styling */
+.sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.sort-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sort-field label {
+  font-weight: 600;
+  color: #495057;
+  margin: 0;
+}
+
+.sort-select {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background: white;
+  color: #495057;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.sort-select:hover {
+  border-color: #80bdff;
+}
+
+.sort-select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.sort-select:disabled {
+  background-color: #e9ecef;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+.sort-order-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: white;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  color: #495057;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sort-order-btn:hover {
+  background: #f8f9fa;
+  border-color: #80bdff;
+  transform: translateY(-1px);
+}
+
+.sort-order-btn:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.sort-order-btn:active {
+  transform: translateY(0);
+}
+
+.sort-order-btn:disabled {
+  background-color: #e9ecef;
+  color: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.sort-order-btn:disabled:hover {
+  transform: none;
+}
+
+.sort-order-icon {
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: transform 0.2s ease;
+}
+
+.sort-order-btn.asc .sort-order-icon {
+  color: #28a745;
+}
+
+.sort-order-btn.desc .sort-order-icon {
+  color: #dc3545;
+}
+
+.sort-order-text {
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sort-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .sort-field {
+    justify-content: space-between;
+  }
+
+  .sort-order-btn {
+    justify-content: center;
+  }
+}
+
+/* Dark mode support (if needed later) */
+@media (prefers-color-scheme: dark) {
+  .sort-controls {
+    background: #2d3748;
+    border-color: #4a5568;
+  }
+
+  .sort-field label {
+    color: #e2e8f0;
+  }
+
+  .sort-select {
+    background: #1a202c;
+    border-color: #4a5568;
+    color: #e2e8f0;
+  }
+
+  .sort-order-btn {
+    background: #1a202c;
+    border-color: #4a5568;
+    color: #e2e8f0;
+  }
+
+  .sort-order-btn:hover {
+    background: #2d3748;
+  }
+}

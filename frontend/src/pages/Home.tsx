@@ -1,13 +1,12 @@
-   const express = require('express');
-   const app = express();
-   const PORT = process.env.PORT || 3000;
+import React from 'react';
+import { WidgetFeed } from '../components/WidgetFeed';
 
-   app.use(express.json());
+export const Home: React.FC = () => {
+  return (
+    <div className="home">
+      <WidgetFeed />
+    </div>
+  );
+};
 
-   app.get('/api/example', (req, res) => {
-       res.send('Hello World!');
-   });
-
-   app.listen(PORT, () => {
-       console.log(`Server is running on port ${PORT}`);
-   });
+export default Home;

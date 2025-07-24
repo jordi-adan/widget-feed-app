@@ -64,6 +64,21 @@ export const WidgetFeed: React.FC = () => {
     }
   };
 
+  const handleDeleteWidget = async (id: string) => {
+    try {
+      setError(null);
+      const response = await widgetApi.deleteWidget(id);
+      if (response.success) {
+        setWidgets(prev => prev.filter(widget => widget.id !== id));
+      } else {
+        setError(response.error || 'Failed to delete widget');
+      }
+    } catch (err) {
+      setError('Failed to delete widget');
+      console.error('Error deleting widget:', err);
+    }
+  };
+
   if (loading) {
     return (
       <div className="widget-feed">
@@ -109,6 +124,7 @@ export const WidgetFeed: React.FC = () => {
               key={widget.id}
               widget={widget}
               onUpdate={handleUpdateWidget}
+              onDelete={handleDeleteWidget}
             />
           ))
         )}

@@ -46,7 +46,7 @@ export class DummyDataService {
             { 
               id: 'card-1', 
               title: 'Technology', 
-              imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=280&h=160&fit=crop&q=80', 
+              imageUrl: 'https://images.unsplash.com/photo-1484417894907-623942c8ee29?w=280&h=160&fit=crop&q=80', 
               description: 'Latest tech news, gadgets, and innovations', 
               actionUrl: '#technology' 
             },
@@ -67,7 +67,7 @@ export class DummyDataService {
             { 
               id: 'card-4', 
               title: 'Food & Cooking', 
-              imageUrl: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=280&h=160&fit=crop&q=80', 
+              imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=280&h=160&fit=crop&q=80', 
               description: 'Recipes, restaurant reviews, and culinary trends', 
               actionUrl: '#food' 
             }

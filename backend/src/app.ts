@@ -11,12 +11,14 @@ import { CreateWidgetDescriptorUseCase } from './application/CreateWidgetDescrip
 import { GetAllWidgetDescriptorsUseCase } from './application/GetAllWidgetDescriptorsUseCase';
 import { InMemoryWidgetRepository } from './infrastructure/repositories/InMemoryWidgetRepository';
 import { InMemoryWidgetDescriptorRepository } from './infrastructure/repositories/InMemoryWidgetDescriptorRepository';
+import { DummyDataService } from './infrastructure/services/DummyDataService';
 
 // Dependency Injection Container (following Hexagonal Architecture)
 class ApplicationContainer {
   private static instance: ApplicationContainer;
   private widgetRepository: InMemoryWidgetRepository;
   private widgetDescriptorRepository: InMemoryWidgetDescriptorRepository;
+  private dummyDataService: DummyDataService;
   private createWidgetUseCase: CreateWidgetUseCase;
   private getAllWidgetsUseCase: GetAllWidgetsUseCase;
   private getSortedWidgetsUseCase: GetSortedWidgetsUseCase;
@@ -31,6 +33,7 @@ class ApplicationContainer {
     // Infrastructure layer
     this.widgetRepository = new InMemoryWidgetRepository();
     this.widgetDescriptorRepository = new InMemoryWidgetDescriptorRepository();
+    this.dummyDataService = new DummyDataService(this.widgetRepository);
     
     // Application layer - Widget use cases
     this.createWidgetUseCase = new CreateWidgetUseCase(this.widgetRepository);
@@ -71,6 +74,10 @@ class ApplicationContainer {
 
   public getWidgetDescriptorController(): WidgetDescriptorController {
     return this.widgetDescriptorController;
+  }
+
+  public getDummyDataService(): DummyDataService {
+    return this.dummyDataService;
   }
 }
 
@@ -113,12 +120,38 @@ app.use('*', (req, res) => {
   });
 });
 
+// Parse command line arguments
+const args = process.argv.slice(2);
+const shouldLoadDummyData = args.includes('--dummy-data') || args.includes('-d');
+
 // Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Widget Feed API Server is running on http://localhost:${PORT}`);
-  console.log(`📊 Health check available at http://localhost:${PORT}/health`);
-  console.log(`🎯 PRD Widget API at http://localhost:${PORT}/widgets`);
-  console.log(`🔗 Legacy Widget API at http://localhost:${PORT}/api/widgets`);
-});
+const startServer = async () => {
+  try {
+    // Load dummy data if flag is provided
+    if (shouldLoadDummyData) {
+      console.log('🎭 Dummy data flag detected, loading sample data...');
+      const container = ApplicationContainer.getInstance();
+      await container.getDummyDataService().loadDummyData();
+    }
+
+    app.listen(PORT, () => {
+      console.log(`🚀 Widget Feed API Server is running on http://localhost:${PORT}`);
+      console.log(`📊 Health check available at http://localhost:${PORT}/health`);
+      console.log(`🎯 PRD Widget API at http://localhost:${PORT}/widgets`);
+      console.log(`🔗 Legacy Widget API at http://localhost:${PORT}/api/widgets`);
+      
+      if (shouldLoadDummyData) {
+        console.log(`🎭 Server started with dummy data loaded`);
+      } else {
+        console.log(`💡 Tip: Use --dummy-data or -d flag to load sample data`);
+      }
+    });
+  } catch (error) {
+    console.error('❌ Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+startServer();
 
 export default app;

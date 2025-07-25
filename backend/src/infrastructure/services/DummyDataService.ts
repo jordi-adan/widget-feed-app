@@ -80,10 +80,12 @@ export class DummyDataService {
         content: JSON.stringify({
           title: 'Quick Actions',
           actions: [
-            { label: 'Create Widget', icon: 'plus', action: 'create' },
-            { label: 'View All', icon: 'list', action: 'view_all' },
-            { label: 'Settings', icon: 'settings', action: 'settings' },
-            { label: 'Help', icon: 'help', action: 'help' }
+            { id: 'action-1', label: 'Create Widget', icon: 'plus', action: 'create', style: 'primary' },
+            { id: 'action-2', label: 'View All', icon: 'list', action: 'view_all', style: 'secondary' },
+            { id: 'action-3', label: 'Settings', icon: 'settings', action: 'settings', style: 'outline' },
+            { id: 'action-4', label: 'Help', icon: 'help', url: '#help', style: 'ghost' },
+            { id: 'action-5', label: 'Share', icon: 'share', action: 'share', style: 'secondary' },
+            { id: 'action-6', label: 'Reports', icon: 'chart', action: 'reports', style: 'outline' }
           ],
           layout: 'grid'
         })

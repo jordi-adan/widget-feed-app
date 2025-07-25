@@ -43,21 +43,78 @@ export class DummyDataService {
         content: JSON.stringify({
           title: 'Popular Categories',
           cards: [
-            { id: 'card-1', title: 'Technology', imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=150&h=100&fit=crop', description: 'Latest tech news', actionUrl: '#' },
-            { id: 'card-2', title: 'Sports', imageUrl: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=150&h=100&fit=crop', description: 'Sports updates', actionUrl: '#' },
-            { id: 'card-3', title: 'Entertainment', imageUrl: 'https://images.unsplash.com/photo-1489599510025-c4625c9e3e0e?w=150&h=100&fit=crop', description: 'Entertainment news', actionUrl: '#' },
-            { id: 'card-4', title: 'Business', imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=150&h=100&fit=crop', description: 'Business insights', actionUrl: '#' }
+            { 
+              id: 'card-1', 
+              title: 'Technology', 
+              imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=280&h=160&fit=crop&q=80', 
+              description: 'Latest tech news, gadgets, and innovations', 
+              actionUrl: '#technology' 
+            },
+            { 
+              id: 'card-2', 
+              title: 'Sports', 
+              imageUrl: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=280&h=160&fit=crop&q=80', 
+              description: 'Sports updates, results, and analysis', 
+              actionUrl: '#sports' 
+            },
+            { 
+              id: 'card-3', 
+              title: 'Travel', 
+              imageUrl: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=280&h=160&fit=crop&q=80', 
+              description: 'Travel guides, destinations, and tips', 
+              actionUrl: '#travel' 
+            },
+            { 
+              id: 'card-4', 
+              title: 'Food & Cooking', 
+              imageUrl: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=280&h=160&fit=crop&q=80', 
+              description: 'Recipes, restaurant reviews, and culinary trends', 
+              actionUrl: '#food' 
+            }
           ]
         })
       },
       {
         type: 'image_list',
         content: JSON.stringify({
-          title: 'Gallery',
+          title: 'Featured Photography',
           images: [
-            { id: 'img-1', url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=200&fit=crop', caption: 'Beautiful Nature', altText: 'Nature landscape' },
-            { id: 'img-2', url: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=300&h=200&fit=crop', caption: 'City Architecture', altText: 'Urban architecture' },
-            { id: 'img-3', url: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=300&h=200&fit=crop', caption: 'Abstract Art', altText: 'Abstract composition' }
+            { 
+              id: 'img-1', 
+              url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&q=80', 
+              caption: 'Majestic Mountain Landscape', 
+              altText: 'Snow-capped mountain peaks against blue sky' 
+            },
+            { 
+              id: 'img-2', 
+              url: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop&q=80', 
+              caption: 'Modern City Architecture', 
+              altText: 'Contemporary glass skyscrapers in downtown area' 
+            },
+            { 
+              id: 'img-3', 
+              url: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop&q=80', 
+              caption: 'Enchanted Forest Path', 
+              altText: 'Sunlight filtering through tall trees on forest trail' 
+            },
+            { 
+              id: 'img-4', 
+              url: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=400&h=300&fit=crop&q=80', 
+              caption: 'Serene Lake Reflection', 
+              altText: 'Crystal clear lake reflecting surrounding mountains' 
+            },
+            { 
+              id: 'img-5', 
+              url: 'https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?w=400&h=300&fit=crop&q=80', 
+              caption: 'Golden Sunset Beach', 
+              altText: 'Waves crashing on sandy beach during golden hour' 
+            },
+            { 
+              id: 'img-6', 
+              url: 'https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=400&h=300&fit=crop&q=80', 
+              caption: 'Vibrant Flower Garden', 
+              altText: 'Colorful wildflowers blooming in spring meadow' 
+            }
           ],
           layout: 'grid'
         })

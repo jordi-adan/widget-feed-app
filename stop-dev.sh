@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Widget Feed App - Stop Development Services Script
-# This script stops all running development services including PostgreSQL
+# This script stops all running development services
 
 set -e
 
@@ -43,15 +43,6 @@ kill_port_processes() {
 kill_port_processes $BACKEND_PORT "backend"
 kill_port_processes $FRONTEND_PORT "frontend"
 
-# Stop PostgreSQL
-echo -e "${YELLOW}🗄️  Stopping PostgreSQL container...${NC}"
-if command -v docker-compose &> /dev/null; then
-    docker-compose stop postgres-dev 2>/dev/null || true
-    echo -e "${GREEN}✅ PostgreSQL stopped${NC}"
-else
-    echo -e "${YELLOW}⚠️  docker-compose not found, skipping PostgreSQL stop${NC}"
-fi
-
 # Clean up log files
 echo -e "${YELLOW}🧹 Cleaning up log files...${NC}"
 rm -f backend.log frontend.log
@@ -62,5 +53,5 @@ echo -e "${GREEN}🎉 All development services stopped successfully!${NC}"
 echo ""
 echo -e "${BLUE}📋 Next Steps:${NC}"
 echo "• Start services: ./start-dev.sh"
-echo "• Reset database: ./scripts/db-reset.sh"
-echo "• View database:  ./scripts/db-console.sh"
+echo "• Test backend:   curl http://localhost:3001/health"
+echo "• Test frontend:  open http://localhost:3000"

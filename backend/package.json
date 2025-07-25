@@ -5,7 +5,9 @@
   "main": "src/app.ts",
   "scripts": {
     "dev": "ts-node-dev src/app.ts",
+    "dev:dummy": "ts-node-dev src/app.ts --dummy-data",
     "start": "node dist/app.js",
+    "start:dummy": "node dist/app.js --dummy-data",
     "build": "tsc",
     "test": "jest",
     "test:watch": "jest --watch",

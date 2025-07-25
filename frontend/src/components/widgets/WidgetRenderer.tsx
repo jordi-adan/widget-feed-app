@@ -4,8 +4,8 @@ import { TextBlock } from './TextBlock';
 import { ExpandableList } from './ExpandableList';
 import { HorizontalCards } from './HorizontalCards';
 import { ImageList } from './ImageList';
+import { HighlightBanner } from './HighlightBanner';
 // Import other widget components as we create them
-// import { HighlightBanner } from './HighlightBanner';
 // import { QuickActions } from './QuickActions';
 
 export interface WidgetRendererProps {
@@ -27,8 +27,7 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({ descriptor }) =>
       return <ImageList descriptor={descriptor} />;
     
     case 'highlight_banner':
-      // TODO: Implement HighlightBanner component
-      return <div>HighlightBanner component coming soon...</div>;
+      return <HighlightBanner descriptor={descriptor} />;
     
     case 'quick_actions':
       // TODO: Implement QuickActions component

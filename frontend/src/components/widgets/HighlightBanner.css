@@ -1,0 +1,231 @@
+.highlight-banner {
+  position: relative;
+  padding: 48px 32px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.highlight-banner--light {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  color: #1a1a1a;
+}
+
+.highlight-banner--dark {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  color: white;
+}
+
+.highlight-banner__content {
+  max-width: 600px;
+  z-index: 2;
+  position: relative;
+}
+
+.highlight-banner__title {
+  margin: 0 0 16px 0;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.highlight-banner__subtitle {
+  margin: 0 0 16px 0;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.4;
+  opacity: 0.9;
+}
+
+.highlight-banner__description {
+  margin: 0 0 24px 0;
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: 0.8;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.highlight-banner__cta {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 2px solid transparent;
+}
+
+.highlight-banner__cta--primary {
+  background: #007bff;
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+}
+
+.highlight-banner__cta--primary:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+  color: white;
+  text-decoration: none;
+}
+
+.highlight-banner__cta--secondary {
+  background: transparent;
+  color: currentColor;
+  border-color: currentColor;
+}
+
+.highlight-banner--light .highlight-banner__cta--secondary {
+  color: #1a1a1a;
+  border-color: #1a1a1a;
+}
+
+.highlight-banner--dark .highlight-banner__cta--secondary {
+  color: white;
+  border-color: white;
+}
+
+.highlight-banner__cta--secondary:hover {
+  background: currentColor;
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.highlight-banner--light .highlight-banner__cta--secondary:hover {
+  background: #1a1a1a;
+  color: white;
+}
+
+.highlight-banner--dark .highlight-banner__cta--secondary:hover {
+  background: white;
+  color: #1a1a1a;
+}
+
+/* Empty State */
+.highlight-banner-empty {
+  padding: 32px;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border: 2px dashed #ddd;
+}
+
+/* Skeleton Loading */
+.skeleton-banner {
+  padding: 48px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.skeleton-line--title {
+  width: 300px;
+  height: 32px;
+}
+
+.skeleton-line--subtitle {
+  width: 400px;
+  height: 20px;
+}
+
+.skeleton-line--description {
+  width: 500px;
+  height: 16px;
+}
+
+.skeleton-button {
+  width: 120px;
+  height: 44px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .highlight-banner {
+    padding: 32px 20px;
+    min-height: 160px;
+  }
+  
+  .highlight-banner__title {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+  
+  .highlight-banner__subtitle {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+  
+  .highlight-banner__description {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  
+  .highlight-banner__cta {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  .skeleton-banner {
+    padding: 32px 20px;
+  }
+  
+  .skeleton-line--title {
+    width: 250px;
+    height: 24px;
+  }
+  
+  .skeleton-line--subtitle {
+    width: 300px;
+    height: 18px;
+  }
+  
+  .skeleton-line--description {
+    width: 280px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .highlight-banner {
+    padding: 24px 16px;
+  }
+  
+  .highlight-banner__title {
+    font-size: 20px;
+  }
+  
+  .highlight-banner__subtitle {
+    font-size: 16px;
+  }
+  
+  .skeleton-line--title {
+    width: 200px;
+  }
+  
+  .skeleton-line--subtitle {
+    width: 220px;
+  }
+  
+  .skeleton-line--description {
+    width: 240px;
+  }
+}

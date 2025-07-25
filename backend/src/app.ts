@@ -33,7 +33,7 @@ class ApplicationContainer {
     // Infrastructure layer
     this.widgetRepository = new InMemoryWidgetRepository();
     this.widgetDescriptorRepository = new InMemoryWidgetDescriptorRepository();
-    this.dummyDataService = new DummyDataService(this.widgetRepository);
+    this.dummyDataService = new DummyDataService(this.widgetRepository, this.widgetDescriptorRepository);
     
     // Application layer - Widget use cases
     this.createWidgetUseCase = new CreateWidgetUseCase(this.widgetRepository);

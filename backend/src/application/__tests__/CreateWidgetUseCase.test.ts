@@ -24,7 +24,7 @@ describe('CreateWidgetUseCase', () => {
     it('should create and save a widget successfully', async () => {
       // Arrange
       const widgetData = {
-        type: 'text',
+        type: 'text_block',
         content: 'Hello World'
       };
 
@@ -34,7 +34,7 @@ describe('CreateWidgetUseCase', () => {
       // Assert
       expect(result.success).toBe(true);
       expect(result.widget).toBeDefined();
-      expect(result.widget!.getType().getValue()).toBe('text');
+      expect(result.widget!.getType().getValue()).toBe('text_block');
       expect(result.widget!.getContent().getValue()).toBe('Hello World');
       expect(mockRepository.save).toHaveBeenCalledWith(result.widget);
     });
@@ -58,7 +58,7 @@ describe('CreateWidgetUseCase', () => {
     it('should return error when content is too long', async () => {
       // Arrange
       const widgetData = {
-        type: 'text',
+        type: 'text_block',
         content: 'a'.repeat(10001) // Exceeds max length
       };
 
@@ -74,7 +74,7 @@ describe('CreateWidgetUseCase', () => {
     it('should handle repository errors gracefully', async () => {
       // Arrange
       const widgetData = {
-        type: 'text',
+        type: 'text_block',
         content: 'Hello World'
       };
       mockRepository.save.mockRejectedValue(new Error('Database error'));

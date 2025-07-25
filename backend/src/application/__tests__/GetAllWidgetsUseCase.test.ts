@@ -26,12 +26,12 @@ describe('GetAllWidgetsUseCase', () => {
       const widgets = [
         Widget.create(
           WidgetId.generate(),
-          WidgetType.create('text'),
+          WidgetType.create('text_block'),
           WidgetContent.create('First widget')
         ),
         Widget.create(
           WidgetId.generate(),
-          WidgetType.create('image'),
+          WidgetType.create('image_list'),
           WidgetContent.create('Second widget')
         )
       ];

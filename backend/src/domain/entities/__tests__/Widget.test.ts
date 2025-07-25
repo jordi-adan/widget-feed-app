@@ -8,7 +8,7 @@ describe('Widget Domain Entity', () => {
     it('should create a widget with valid data', () => {
       // Arrange
       const id = WidgetId.generate();
-      const type = WidgetType.create('text');
+      const type = WidgetType.create('text_block');
       const content = WidgetContent.create('Hello World');
       const timestamp = new Date();
 
@@ -25,7 +25,7 @@ describe('Widget Domain Entity', () => {
     it('should create a widget with current timestamp when not provided', () => {
       // Arrange
       const id = WidgetId.generate();
-      const type = WidgetType.create('text');
+      const type = WidgetType.create('text_block');
       const content = WidgetContent.create('Hello World');
       const beforeCreation = new Date();
 
@@ -44,7 +44,7 @@ describe('Widget Domain Entity', () => {
       // Arrange
       const widget = Widget.create(
         WidgetId.generate(),
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('Original content')
       );
       const newContent = WidgetContent.create('Updated content');
@@ -60,7 +60,7 @@ describe('Widget Domain Entity', () => {
       // Arrange
       const widget = Widget.create(
         WidgetId.generate(),
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('Original content')
       );
       const originalTimestamp = widget.getTimestamp();
@@ -82,7 +82,7 @@ describe('Widget Domain Entity', () => {
     it('should return correct primitive representation', () => {
       // Arrange
       const id = WidgetId.generate();
-      const type = WidgetType.create('text');
+      const type = WidgetType.create('text_block');
       const content = WidgetContent.create('Hello World');
       const timestamp = new Date('2023-01-01T00:00:00Z');
       const widget = Widget.create(id, type, content, timestamp);
@@ -93,7 +93,7 @@ describe('Widget Domain Entity', () => {
       // Assert
       expect(primitive).toEqual({
         id: id.getValue(),
-        type: 'text',
+        type: 'text_block',
         content: 'Hello World',
         timestamp: timestamp.toISOString()
       });

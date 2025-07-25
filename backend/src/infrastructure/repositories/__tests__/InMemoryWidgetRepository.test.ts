@@ -17,7 +17,7 @@ describe('InMemoryWidgetRepository', () => {
       const widgetId = uuidv4();
       const widget = Widget.create(
         WidgetId.create(widgetId),
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('Test content')
       );
 
@@ -43,7 +43,7 @@ describe('InMemoryWidgetRepository', () => {
       // Create widgets with different timestamps
       const widget1 = Widget.create(
         WidgetId.create(uuidv4()),
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('First widget')
       );
       
@@ -52,7 +52,7 @@ describe('InMemoryWidgetRepository', () => {
       
       const widget2 = Widget.create(
         WidgetId.create(uuidv4()),
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('Second widget')
       );
 
@@ -72,7 +72,7 @@ describe('InMemoryWidgetRepository', () => {
       const widgetId = uuidv4();
       const widget = Widget.create(
         WidgetId.create(widgetId),
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('Content to delete')
       );
 
@@ -93,13 +93,13 @@ describe('InMemoryWidgetRepository', () => {
       
       const widget1 = Widget.create(
         WidgetId.create(widget1Id),
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('Keep this')
       );
       
       const widget2 = Widget.create(
         WidgetId.create(widget2Id),
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('Delete this')
       );
 
@@ -115,28 +115,28 @@ describe('InMemoryWidgetRepository', () => {
 
   describe('findByType', () => {
     it('should return empty array when no widgets of specified type', async () => {
-      const widgets = await repository.findByType('image');
+      const widgets = await repository.findByType('image_list');
       expect(widgets).toEqual([]);
     });
 
     it('should return widgets of specified type only', async () => {
       const textWidget = Widget.create(
         WidgetId.create(uuidv4()),
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('Text content')
       );
       
       const imageWidget = Widget.create(
         WidgetId.create(uuidv4()),
-        WidgetType.create('image'),
+        WidgetType.create('image_list'),
         WidgetContent.create('Image content')
       );
 
       await repository.save(textWidget);
       await repository.save(imageWidget);
 
-      const textWidgets = await repository.findByType('text');
-      const imageWidgets = await repository.findByType('image');
+      const textWidgets = await repository.findByType('text_block');
+      const imageWidgets = await repository.findByType('image_list');
 
       expect(textWidgets).toHaveLength(1);
       expect(textWidgets[0]).toEqual(textWidget);
@@ -148,7 +148,7 @@ describe('InMemoryWidgetRepository', () => {
     it('should return widgets sorted by timestamp (latest first)', async () => {
       const widget1 = Widget.create(
         WidgetId.create(uuidv4()),
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('First text widget')
       );
       
@@ -157,14 +157,14 @@ describe('InMemoryWidgetRepository', () => {
       
       const widget2 = Widget.create(
         WidgetId.create(uuidv4()),
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('Second text widget')
       );
 
       await repository.save(widget1);
       await repository.save(widget2);
 
-      const textWidgets = await repository.findByType('text');
+      const textWidgets = await repository.findByType('text_block');
       
       expect(textWidgets).toHaveLength(2);
       expect(textWidgets[0].getId().getValue()).toBe(widget2.getId().getValue()); // Latest first
@@ -180,13 +180,13 @@ describe('InMemoryWidgetRepository', () => {
         
         const widget1 = Widget.create(
           WidgetId.create(widget1Id),
-          WidgetType.create('text'),
+          WidgetType.create('text_block'),
           WidgetContent.create('Content 1')
         );
         
         const widget2 = Widget.create(
           WidgetId.create(widget2Id),
-          WidgetType.create('image'),
+          WidgetType.create('image_list'),
           WidgetContent.create('Content 2')
         );
 
@@ -214,7 +214,7 @@ describe('InMemoryWidgetRepository', () => {
 
         const widget1 = Widget.create(
           WidgetId.create(uuidv4()),
-          WidgetType.create('text'),
+          WidgetType.create('text_block'),
           WidgetContent.create('Content 1')
         );
         
@@ -223,7 +223,7 @@ describe('InMemoryWidgetRepository', () => {
 
         const widget2 = Widget.create(
           WidgetId.create(uuidv4()),
-          WidgetType.create('text'),
+          WidgetType.create('text_block'),
           WidgetContent.create('Content 2')
         );
         
@@ -237,13 +237,13 @@ describe('InMemoryWidgetRepository', () => {
         
         const widget1 = Widget.create(
           WidgetId.create(widget1Id),
-          WidgetType.create('text'),
+          WidgetType.create('text_block'),
           WidgetContent.create('Content 1')
         );
         
         const widget2 = Widget.create(
           WidgetId.create(widget2Id),
-          WidgetType.create('text'),
+          WidgetType.create('text_block'),
           WidgetContent.create('Content 2')
         );
 

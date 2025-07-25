@@ -26,7 +26,7 @@ describe('DeleteWidgetUseCase', () => {
       const widgetId = WidgetId.generate();
       const existingWidget = Widget.create(
         widgetId,
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('Test content')
       );
       

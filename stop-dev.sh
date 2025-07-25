@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Widget Feed App - Stop Development Servers Script
-# This script stops all running development servers
+# Widget Feed App - Stop Development Services Script
+# This script stops all running development services including PostgreSQL
 
 set -e
 
@@ -12,7 +12,7 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-echo -e "${BLUE}🛑 Widget Feed App - Stop Development Servers${NC}"
+echo -e "${BLUE}🛑 Widget Feed App - Stop Development Services${NC}"
 echo "=============================================="
 
 # Ports to clean up
@@ -43,10 +43,24 @@ kill_port_processes() {
 kill_port_processes $BACKEND_PORT "backend"
 kill_port_processes $FRONTEND_PORT "frontend"
 
+# Stop PostgreSQL
+echo -e "${YELLOW}🗄️  Stopping PostgreSQL container...${NC}"
+if command -v docker-compose &> /dev/null; then
+    docker-compose stop postgres-dev 2>/dev/null || true
+    echo -e "${GREEN}✅ PostgreSQL stopped${NC}"
+else
+    echo -e "${YELLOW}⚠️  docker-compose not found, skipping PostgreSQL stop${NC}"
+fi
+
 # Clean up log files
 echo -e "${YELLOW}🧹 Cleaning up log files...${NC}"
 rm -f backend.log frontend.log
 echo -e "${GREEN}✅ Log files cleaned${NC}"
 
 echo ""
-echo -e "${GREEN}🎉 All development servers stopped successfully!${NC}"
+echo -e "${GREEN}🎉 All development services stopped successfully!${NC}"
+echo ""
+echo -e "${BLUE}📋 Next Steps:${NC}"
+echo "• Start services: ./start-dev.sh"
+echo "• Reset database: ./scripts/db-reset.sh"
+echo "• View database:  ./scripts/db-console.sh"

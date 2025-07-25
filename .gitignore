@@ -6,6 +6,13 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+# Database
+backups/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
 # Runtime data
 pids
 *.pid

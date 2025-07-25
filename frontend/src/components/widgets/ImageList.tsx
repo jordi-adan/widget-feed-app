@@ -67,6 +67,9 @@ export const ImageList: React.FC<ImageListProps> = ({ descriptor }) => {
                     src={image.url} 
                     alt={image.altText}
                     className="image-list__image"
+                    onError={(e) => {
+                      e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xMjUgODBMMTc1IDEzMEwxNTAgMTU1TDEwMCAxMDVMMTI1IDgwWiIgZmlsbD0iIzlDQTNBRiIvPgo8Y2lyY2xlIGN4PSIxMzAiIGN5PSI5MCIgcj0iMTAiIGZpbGw9IiM5Q0EzQUYiLz4KPC9zdmc+Cg==';
+                    }}
                   />
                   <div className="image-list__caption">{image.caption}</div>
                 </div>

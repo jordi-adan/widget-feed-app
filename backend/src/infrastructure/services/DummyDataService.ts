@@ -1,11 +1,17 @@
 import { WidgetRepository } from '../../domain/repositories/WidgetRepository';
+import { WidgetDescriptorRepository } from '../../domain/repositories/WidgetDescriptorRepository';
 import { Widget } from '../../models/widget';
 import { WidgetId } from '../../domain/entities/value-objects/WidgetId';
 import { WidgetType } from '../../domain/entities/value-objects/WidgetType';
 import { WidgetContent } from '../../domain/entities/value-objects/WidgetContent';
+import { WidgetDescriptor } from '../../domain/entities/WidgetDescriptor';
+import { ContentType } from '../../domain/entities/value-objects/ContentType';
 
 export class DummyDataService {
-  constructor(private readonly widgetRepository: WidgetRepository) {}
+  constructor(
+    private readonly widgetRepository: WidgetRepository,
+    private readonly widgetDescriptorRepository: WidgetDescriptorRepository
+  ) {}
 
   async loadDummyData(): Promise<void> {
     console.log('🎭 Loading dummy data...');
@@ -37,21 +43,78 @@ export class DummyDataService {
         content: JSON.stringify({
           title: 'Popular Categories',
           cards: [
-            { title: 'Technology', image: 'https://via.placeholder.com/150x100', description: 'Latest tech news' },
-            { title: 'Sports', image: 'https://via.placeholder.com/150x100', description: 'Sports updates' },
-            { title: 'Entertainment', image: 'https://via.placeholder.com/150x100', description: 'Entertainment news' },
-            { title: 'Business', image: 'https://via.placeholder.com/150x100', description: 'Business insights' }
+            { 
+              id: 'card-1', 
+              title: 'Technology', 
+              imageUrl: 'https://images.unsplash.com/photo-1484417894907-623942c8ee29?w=280&h=160&fit=crop&q=80', 
+              description: 'Latest tech news, gadgets, and innovations', 
+              actionUrl: '#technology' 
+            },
+            { 
+              id: 'card-2', 
+              title: 'Sports', 
+              imageUrl: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=280&h=160&fit=crop&q=80', 
+              description: 'Sports updates, results, and analysis', 
+              actionUrl: '#sports' 
+            },
+            { 
+              id: 'card-3', 
+              title: 'Travel', 
+              imageUrl: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=280&h=160&fit=crop&q=80', 
+              description: 'Travel guides, destinations, and tips', 
+              actionUrl: '#travel' 
+            },
+            { 
+              id: 'card-4', 
+              title: 'Food & Cooking', 
+              imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=280&h=160&fit=crop&q=80', 
+              description: 'Recipes, restaurant reviews, and culinary trends', 
+              actionUrl: '#food' 
+            }
           ]
         })
       },
       {
         type: 'image_list',
         content: JSON.stringify({
-          title: 'Gallery',
+          title: 'Featured Photography',
           images: [
-            { url: 'https://via.placeholder.com/300x200', caption: 'Sample Image 1', alt: 'Placeholder 1' },
-            { url: 'https://via.placeholder.com/300x200', caption: 'Sample Image 2', alt: 'Placeholder 2' },
-            { url: 'https://via.placeholder.com/300x200', caption: 'Sample Image 3', alt: 'Placeholder 3' }
+            { 
+              id: 'img-1', 
+              url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&q=80', 
+              caption: 'Majestic Mountain Landscape', 
+              altText: 'Snow-capped mountain peaks against blue sky' 
+            },
+            { 
+              id: 'img-2', 
+              url: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop&q=80', 
+              caption: 'Modern City Architecture', 
+              altText: 'Contemporary glass skyscrapers in downtown area' 
+            },
+            { 
+              id: 'img-3', 
+              url: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop&q=80', 
+              caption: 'Enchanted Forest Path', 
+              altText: 'Sunlight filtering through tall trees on forest trail' 
+            },
+            { 
+              id: 'img-4', 
+              url: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=400&h=300&fit=crop&q=80', 
+              caption: 'Serene Lake Reflection', 
+              altText: 'Crystal clear lake reflecting surrounding mountains' 
+            },
+            { 
+              id: 'img-5', 
+              url: 'https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?w=400&h=300&fit=crop&q=80', 
+              caption: 'Golden Sunset Beach', 
+              altText: 'Waves crashing on sandy beach during golden hour' 
+            },
+            { 
+              id: 'img-6', 
+              url: 'https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=400&h=300&fit=crop&q=80', 
+              caption: 'Vibrant Flower Garden', 
+              altText: 'Colorful wildflowers blooming in spring meadow' 
+            }
           ],
           layout: 'grid'
         })
@@ -74,10 +137,12 @@ export class DummyDataService {
         content: JSON.stringify({
           title: 'Quick Actions',
           actions: [
-            { label: 'Create Widget', icon: 'plus', action: 'create' },
-            { label: 'View All', icon: 'list', action: 'view_all' },
-            { label: 'Settings', icon: 'settings', action: 'settings' },
-            { label: 'Help', icon: 'help', action: 'help' }
+            { id: 'action-1', label: 'Create Widget', icon: 'plus', action: 'create', style: 'primary' },
+            { id: 'action-2', label: 'View All', icon: 'list', action: 'view_all', style: 'secondary' },
+            { id: 'action-3', label: 'Settings', icon: 'settings', action: 'settings', style: 'outline' },
+            { id: 'action-4', label: 'Help', icon: 'help', url: '#help', style: 'ghost' },
+            { id: 'action-5', label: 'Share', icon: 'share', action: 'share', style: 'secondary' },
+            { id: 'action-6', label: 'Reports', icon: 'chart', action: 'reports', style: 'outline' }
           ],
           layout: 'grid'
         })
@@ -107,6 +172,7 @@ export class DummyDataService {
     let loadedCount = 0;
     for (const widgetData of dummyWidgets) {
       try {
+        // Create legacy widget
         const widget = Widget.create(
           WidgetId.generate(),
           WidgetType.create(widgetData.type),
@@ -115,13 +181,23 @@ export class DummyDataService {
         );
 
         await this.widgetRepository.save(widget);
+
+        // Create PRD WidgetDescriptor for the same data
+        const widgetDescriptor = WidgetDescriptor.createStatic({
+          id: WidgetId.generate(), // Different ID for PRD system
+          widgetType: WidgetType.create(widgetData.type),
+          contentType: ContentType.create('static'),
+          staticContent: JSON.parse(widgetData.content) // Parse JSON content for PRD system
+        });
+
+        await this.widgetDescriptorRepository.save(widgetDescriptor);
         loadedCount++;
       } catch (error) {
         console.error(`❌ Failed to create dummy widget of type ${widgetData.type}:`, error);
       }
     }
 
-    console.log(`✅ Successfully loaded ${loadedCount} dummy widgets`);
+    console.log(`✅ Successfully loaded ${loadedCount} dummy widgets in both legacy and PRD systems`);
   }
 
   async clearData(): Promise<void> {

@@ -1,13 +1,16 @@
 import { DummyDataService } from '../DummyDataService';
 import { InMemoryWidgetRepository } from '../../repositories/InMemoryWidgetRepository';
+import { InMemoryWidgetDescriptorRepository } from '../../repositories/InMemoryWidgetDescriptorRepository';
 
 describe('DummyDataService', () => {
   let repository: InMemoryWidgetRepository;
+  let widgetDescriptorRepository: InMemoryWidgetDescriptorRepository;
   let dummyDataService: DummyDataService;
 
   beforeEach(() => {
     repository = new InMemoryWidgetRepository();
-    dummyDataService = new DummyDataService(repository);
+    widgetDescriptorRepository = new InMemoryWidgetDescriptorRepository();
+    dummyDataService = new DummyDataService(repository, widgetDescriptorRepository);
   });
 
   describe('loadDummyData', () => {

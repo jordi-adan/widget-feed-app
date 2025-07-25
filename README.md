@@ -1,115 +1,125 @@
-# Widget Feed App
+# **Widget Feed App**
 
-A modern, single-screen widget feed application built with Clean Architecture, implementing the PRD-compliant widget system with TypeScript, React, and Node.js.
+## 🗂 Table of Contents
 
-## 🎯 Overview
+* [Overview](#overview)
+* [Features](#features)
+* [Architecture](#architecture)
+* [Quick Start](#quick-start)
+* [API Reference](#api-reference)
+* [Project Structure](#project-structure)
+* [Testing](#testing)
+* [Tech Stack](#tech-stack)
+* [Development Workflow](#development-workflow)
+* [Future Roadmap](#future-roadmap)
+* [Contributing](#contributing)
+* [License](#license)
 
-The Widget Feed App is a PRD-compliant application that displays a dynamic feed of interactive widgets. It supports 6 different widget types with both static and dynamic content loading, complete with loading states and error handling.
+---
+
+## 🚀 Overview
+
+The **Widget Feed App** is a single-page, PRD-compliant application built on a Clean (Hexagonal) Architecture. It renders a dynamic feed of six widget types, supporting both static and live data, complete with robust loading states and error handling.
+
+**Key Highlights:**
+
+* Modern TypeScript-based stack (React + Node.js)
+* Domain-Driven, test-first development
+* Fully modular widget system with easy extensibility
+
+---
 
 ## ✨ Features
 
-### 📱 Widget Types (PRD-Compliant)
-- **Text Block** - Rich text content display
-- **Expandable List** - Interactive collapsible lists
-- **Horizontal Cards** - Scrollable card carousels with images
-- **Image List** - Photo galleries with lightbox functionality
-- **Highlight Banner** - Important announcements and messages
-- **Quick Actions** - Action button grids with emoji icons
+* **Six PRD Widget Types**
 
-### 🔄 Dynamic Content System
-- **Static Widgets** - Pre-defined content
-- **Dynamic Widgets** - External data source integration
-- **Loading States** - Skeleton loading and hidden states
-- **Error Handling** - Retry mechanisms and error messages
+  * **Text Block:** Rich text rendering
+  * **Expandable List:** Collapsible, interactive lists
+  * **Horizontal Cards:** Image carousels with swipe/scroll
+  * **Image List:** Gallery with lightbox
+  * **Highlight Banner:** Full-width announcements
+  * **Quick Actions:** Emoji-labeled action buttons grid
 
-### 🏗️ Architecture
+* **Content Modes**
 
-Built with **Hexagonal Architecture** (Ports and Adapters) and **Domain-Driven Design**:
+  * **Static:** Built-in, pre-defined content
+  * **Dynamic:** Fetches external data with auto-refresh
 
-- **Domain Layer** - Pure business logic (entities, value objects, repositories)
-- **Application Layer** - Use cases and application orchestration
-- **Infrastructure Layer** - External integrations (in-memory storage, APIs)
-- **Interface Layer** - REST controllers and Express.js routing
+* **UX Resilience**
 
-## 🚀 Quick Start
+  * Skeleton loaders and `Hidden` states during fetch
+  * Retry buttons and user-friendly error messages
 
-### Using Development Scripts (Recommended)
+---
+
+## 🏗 Architecture
+
+The app follows **Hexagonal Architecture (Ports & Adapters)** and **Domain-Driven Design**, separated into four layers:
+
+1. **Domain Layer**   – Business entities, value objects, repository interfaces
+2. **Application Layer**   – Use-cases and orchestration
+3. **Infrastructure Layer**   – External adapters (APIs, in-memory storage)
+4. **Interface Layer**   – REST controllers (Express) & React UI
+
+---
+
+## ⚡ Quick Start
+
+### Prerequisites
+
+* Node.js ≥14
+* npm or yarn
+
+### Development (All-in-One)
 
 ```bash
-# Start both backend and frontend with dummy data
-./start-dev.sh
-
-# Stop all services
-./stop-dev.sh
+./start-dev.sh   # Launches backend + frontend with dummy data
+# ---
+./stop-dev.sh    # Stops all services
 ```
 
 ### Manual Setup
 
 #### Backend
+
 ```bash
 cd backend
-npm install
-npm run dev --dummy-data  # Start with sample data
-npm test                  # Run 214 tests across 22 suites
+npm ci
+npm run dev -- --dummy-data   # Starts server on :3001
+npm test                      # Executes 214 tests
 ```
 
 #### Frontend
+
 ```bash
 cd frontend
-npm install
-npm start                 # Start React development server
-npm run build            # Build for production
+npm ci
+npm start                     # React dev on :3000
+npm run build                 # Production bundle
 ```
 
-## 📡 API Endpoints
+---
 
-### PRD-Compliant Widget Descriptors (Primary API)
-- `GET /widgets` - Get all widget descriptors
-- `POST /widgets` - Create new widget descriptor
+## 📡 API Reference
 
-### Legacy Widget API (Backward Compatibility)
-- `GET /api/widgets` - Get legacy widgets with dummy data
-- `POST /api/widgets` - Create legacy widget
-- `PUT /api/widgets/:id` - Update widget content
-- `DELETE /api/widgets/:id` - Delete widget
+| Endpoint                      | Description                      |
+| ----------------------------- | -------------------------------- |
+| **GET** `/widgets`            | List all widget descriptors      |
+| **POST** `/widgets`           | Create a widget descriptor       |
+| **GET** `/api/widgets`        | Legacy list (dummy data)         |
+| **POST** `/api/widgets`       | Create legacy widget             |
+| **PUT** `/api/widgets/:id`    | Update legacy widget             |
+| **DELETE** `/api/widgets/:id` | Delete legacy widget             |
+| **GET** `/health`             | Health check (200 OK)            |
+| **GET** `/widget-data/:id`    | (Planned) Dynamic widget payload |
 
-### Health & Utilities
-- `GET /health` - Health check endpoint
-- `GET /widget-data/:id` - Dynamic widget data (planned)
+**Example**
 
-## 🧪 Testing
-
-### Comprehensive Test Suite
 ```bash
-cd backend
-npm test                    # Run all 214 tests
-npm run test:watch         # Watch mode for development
-npm run test:coverage      # Generate coverage report
+curl -X GET http://localhost:3001/widgets
 ```
 
-### Test Coverage
-- ✅ **22 test suites** passing
-- ✅ **214 individual tests** passing
-- ✅ Domain entities and value objects
-- ✅ Application use cases
-- ✅ Infrastructure repositories
-- ✅ API controllers and endpoints
-
-## 🛠️ Tech Stack
-
-### Backend
-- **Node.js** with **TypeScript**
-- **Express.js** for REST API
-- **Jest** for comprehensive testing
-- **In-memory storage** (no database dependencies)
-- **Hexagonal Architecture** with TDD
-
-### Frontend  
-- **React 18** with **TypeScript**
-- **Create React App** foundation
-- **CSS Modules** for styling
-- **Error Boundaries** for resilience
-- **Component-based architecture**
+---
 
 ## 📁 Project Structure
 
@@ -117,146 +127,77 @@ npm run test:coverage      # Generate coverage report
 widget-feed-app/
 ├── backend/
 │   ├── src/
-│   │   ├── domain/                    # Domain layer
-│   │   │   ├── entities/              # Domain entities
-│   │   │   │   ├── WidgetDescriptor.ts
-│   │   │   │   └── value-objects/     # Value objects
-│   │   │   └── repositories/          # Repository interfaces
-│   │   ├── application/               # Application layer
-│   │   │   ├── CreateWidgetDescriptorUseCase.ts
-│   │   │   ├── GetAllWidgetDescriptorsUseCase.ts
-│   │   │   └── __tests__/            # Use case tests
-│   │   ├── infrastructure/           # Infrastructure layer
-│   │   │   ├── repositories/         # In-memory implementations
-│   │   │   └── services/            # External services
-│   │   ├── controllers/             # Interface adapters
-│   │   └── types/                   # Shared types
+│   │   ├── domain/            # Entities, value objects, repos
+│   │   ├── application/       # Use-cases & tests
+│   │   ├── infrastructure/    # Adapters & services
+│   │   └── controllers/       # Express routes
 │   ├── jest.config.js
 │   └── tsconfig.json
 ├── frontend/
 │   └── src/
-│       ├── components/              # React components
-│       │   ├── widgets/            # Widget-specific components
-│       │   ├── WidgetItem.tsx      # Generic widget renderer
-│       │   └── BaseWidget.tsx     # Widget wrapper with states
-│       ├── pages/
-│       ├── services/              # API integration
-│       └── types/                 # TypeScript definitions
-├── start-dev.sh                   # Development startup script
-├── stop-dev.sh                    # Development cleanup script
+│       ├── components/        # Widgets & UI
+│       ├── services/          # API clients
+│       └── types/             # TS definitions
+├── start-dev.sh
+├── stop-dev.sh
 └── README.md
 ```
 
-## 🎨 Widget System Architecture
+---
 
-### Widget Descriptor Structure
-```typescript
-interface WidgetDescriptor {
-  id: string;
-  type: 'static' | 'dynamic';
-  widgetType: 'text_block' | 'expandable_list' | 'horizontal_cards' | 
-              'image_list' | 'highlight_banner' | 'quick_actions';
-  config: StaticConfig | DynamicConfig;
-}
-```
+## 🧪 Testing
 
-### Static vs Dynamic Widgets
-- **Static Widgets** - Content embedded in descriptor
-- **Dynamic Widgets** - Content fetched from external URLs
-- **Loading States** - Skeleton animations or hidden loading
-- **Error States** - Retry buttons, error messages, or hidden errors
+* **Backend:** `npm test` (214 specs, 22 suites)
+* **Coverage:** `npm run test:coverage`
+* **Watch mode:** `npm run test:watch`
+* **Frontend:** Integrates unit and snapshot testing via Jest
 
-## 🔄 Development Workflow
+---
 
-### Test-Driven Development (TDD)
-1. **Red** - Write failing tests first
-2. **Green** - Write minimal code to pass tests  
-3. **Refactor** - Improve code while maintaining tests
-4. **Commit** - Clean commits with descriptive messages
+## 🛠 Tech Stack
 
-### Branch Strategy
-- `main` - Production-ready code
-- `feature/*` - New features and improvements
-- `fix/*` - Bug fixes and patches
-- `cleanup/*` - Code cleanup and refactoring
+| Layer        | Technology                             |
+| ------------ | -------------------------------------- |
+| Backend      | Node.js, TypeScript, Express, Jest     |
+| Frontend     | React 18, TypeScript, CRA, CSS Modules |
+| Architecture | Hexagonal (Ports & Adapters), DDD, TDD |
 
-## 🌐 Live API Testing
+---
 
-```bash
-# Health check
-curl http://localhost:3001/health
+## 📈 Development Workflow
 
-# Get all widgets (with dummy data)
-curl http://localhost:3001/api/widgets
+1. **Fork** & **Clone**
+2. Create feature branch: `feature/your-feature`
+3. **Red** → Write failing test
+4. **Green** → Implement minimal code
+5. **Refactor** → Clean up and optimize
+6. PR with clear description & reviewers
 
-# Get widget descriptors (PRD API)
-curl http://localhost:3001/widgets
+**Branching**
 
-### Test-Driven Development (TDD)
-1. **Red** - Write failing tests first
-2. **Green** - Write minimal code to pass tests  
-3. **Refactor** - Improve code while maintaining tests
-4. **Commit** - Clean commits with descriptive messages
+* `main` – production
+* `feature/*` – new work
+* `fix/*` – bugs
+* `cleanup/*` – refactors
 
-### Branch Strategy
-- `main` - Production-ready code
-- `feature/*` - New features and improvements
-- `fix/*` - Bug fixes and patches
-- `cleanup/*` - Code cleanup and refactoring
+---
 
-## 📊 Current Implementation Status
+## 🚀 Future Roadmap
 
-### ✅ Completed (Backend - 100%)
-- Hexagonal Architecture implementation
-- All 6 PRD widget types
-- Complete test suite (214 tests)
-- In-memory repositories
-- REST API with Express.js
-- Widget descriptor system
-- Dummy data service with high-quality images
+* Dynamic data endpoint (`/widget-data/:id`)
+* Admin UI for widget management (CRUD/reorder)
+* Advanced animations & transitions
+* Performance profiling & optimizations
+* Responsive layout enhancements
 
-### ✅ Completed (Frontend - 100%)
-- BaseWidget component with state management
-- **All 6 PRD Widget Components:**
-  - TextBlock ✅
-  - ExpandableList ✅ 
-  - HorizontalCards ✅
-  - ImageList ✅
-  - HighlightBanner ✅
-  - QuickActions ✅
-- WidgetRenderer for smart component routing
-- Error boundaries and loading states
-- TypeScript integration
-- Component-based architecture
-- Comprehensive test coverage (4 test suites)
+---
 
-### ⏳ Future Enhancements
-- Dynamic data endpoint (`/widget-data/:id`) for external data sources
-- Widget management features (edit, delete, reorder)
-- Advanced animations and transitions
-- Performance optimizations
-- Mobile responsiveness improvements
+## 🤝 Contributing
 
-## 🌐 Live API Testing
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-```bash
-# Health check
-curl http://localhost:3001/health
+---
 
-# Get all widgets (with dummy data)
-curl http://localhost:3001/api/widgets
+## 📄 License
 
-# Get widget descriptors (PRD API)
-curl http://localhost:3001/widgets
-
-# Create new widget descriptor
-curl -X POST http://localhost:3001/widgets 
-  -H "Content-Type: application/json" 
-  -d '{"widgetType":"text_block","contentType":"static","staticContent":{"title":"Test"}}'
-
-
-## 🔗 Related Documentation
-
-- [PRD Implementation Plan](./PRD_IMPLEMENTATION_PLAN.md) - Detailed implementation progress
-- [API Documentation](./backend/README.md) - Backend API details  
-- [Component Guide](./frontend/README.md) - Frontend component documentation
+This project is licensed under the [MIT License](LICENSE).

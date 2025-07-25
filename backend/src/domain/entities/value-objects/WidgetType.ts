@@ -1,6 +1,5 @@
 export class WidgetType {
   private static readonly VALID_TYPES = [
-    'text', 'image', 'video', 'link', 'chart',
     'expandable_list', 'horizontal_cards', 'image_list', 'text_block', 'highlight_banner', 'quick_actions'
   ] as const;
   
@@ -18,26 +17,6 @@ export class WidgetType {
 
   public equals(other: WidgetType): boolean {
     return this.value === other.value;
-  }
-
-  public isText(): boolean {
-    return this.value === 'text';
-  }
-
-  public isImage(): boolean {
-    return this.value === 'image';
-  }
-
-  public isVideo(): boolean {
-    return this.value === 'video';
-  }
-
-  public isLink(): boolean {
-    return this.value === 'link';
-  }
-
-  public isChart(): boolean {
-    return this.value === 'chart';
   }
 
   public isExpandableList(): boolean {

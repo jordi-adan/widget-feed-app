@@ -28,14 +28,14 @@ describe('GetSortedWidgetsUseCase', () => {
       
       const oldWidget = Widget.create(
         WidgetId.generate(),
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('Old widget'),
         oldDate
       );
       
       const newWidget = Widget.create(
         WidgetId.generate(),
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('New widget'),
         newDate
       );
@@ -63,14 +63,14 @@ describe('GetSortedWidgetsUseCase', () => {
       
       const oldWidget = Widget.create(
         WidgetId.generate(),
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('Old widget'),
         oldDate
       );
       
       const newWidget = Widget.create(
         WidgetId.generate(),
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('New widget'),
         newDate
       );
@@ -94,13 +94,13 @@ describe('GetSortedWidgetsUseCase', () => {
       // Arrange
       const textWidget = Widget.create(
         WidgetId.generate(),
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('Text widget')
       );
       
       const imageWidget = Widget.create(
         WidgetId.generate(),
-        WidgetType.create('image'),
+        WidgetType.create('image_list'),
         WidgetContent.create('Image widget')
       );
       
@@ -115,22 +115,22 @@ describe('GetSortedWidgetsUseCase', () => {
       // Assert
       expect(result.success).toBe(true);
       expect(result.widgets).toHaveLength(2);
-      expect(result.widgets![0].getType().getValue()).toBe('image');
-      expect(result.widgets![1].getType().getValue()).toBe('text');
+      expect(result.widgets![0].getType().getValue()).toBe('image_list');
+      expect(result.widgets![1].getType().getValue()).toBe('text_block');
     });
 
     it('should default to timestamp descending when no sort parameters provided', async () => {
       // Arrange
       const oldWidget = Widget.create(
         WidgetId.generate(),
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('Old widget'),
         new Date('2023-01-01T00:00:00Z')
       );
       
       const newWidget = Widget.create(
         WidgetId.generate(),
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('New widget'),
         new Date('2023-01-02T00:00:00Z')
       );

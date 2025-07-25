@@ -42,7 +42,7 @@ describe('WidgetController', () => {
     it('should create a new widget successfully', async () => {
       // Arrange
       const widgetData = {
-        type: 'text',
+        type: 'text_block',
         content: 'Hello World'
       };
 
@@ -54,7 +54,7 @@ describe('WidgetController', () => {
       // Assert
       expect(response.status).toBe(201);
       expect(response.body.success).toBe(true);
-      expect(response.body.widget.type).toBe('text');
+      expect(response.body.widget.type).toBe('text_block');
       expect(response.body.widget.content).toBe('Hello World');
       expect(response.body.widget.id).toBeDefined();
       expect(response.body.widget.timestamp).toBeDefined();
@@ -81,7 +81,7 @@ describe('WidgetController', () => {
     it('should return 400 for missing required fields', async () => {
       // Arrange
       const widgetData = {
-        type: 'text'
+        type: 'text_block'
         // missing content
       };
 
@@ -102,10 +102,10 @@ describe('WidgetController', () => {
       // Arrange
       await request(app)
         .post('/api/widgets')
-        .send({ type: 'text', content: 'First widget' });
+        .send({ type: 'text_block', content: 'First widget' });
       await request(app)
         .post('/api/widgets')
-        .send({ type: 'image', content: 'Second widget' });
+        .send({ type: 'image_list', content: 'Second widget' });
 
       // Act
       const response = await request(app)
@@ -134,7 +134,7 @@ describe('WidgetController', () => {
       // Arrange - Create a widget first
       const createResponse = await request(app)
         .post('/api/widgets')
-        .send({ type: 'text', content: 'Original content' });
+        .send({ type: 'text_block', content: 'Original content' });
       
       const widgetId = createResponse.body.widget.id;
       const updateData = { content: 'Updated content' };
@@ -187,7 +187,7 @@ describe('WidgetController', () => {
       // Arrange
       const createResponse = await request(app)
         .post('/api/widgets')
-        .send({ type: 'text', content: 'Original content' });
+        .send({ type: 'text_block', content: 'Original content' });
       
       const widgetId = createResponse.body.widget.id;
 
@@ -206,7 +206,7 @@ describe('WidgetController', () => {
       // Arrange
       const createResponse = await request(app)
         .post('/api/widgets')
-        .send({ type: 'text', content: 'Original content' });
+        .send({ type: 'text_block', content: 'Original content' });
       
       const widgetId = createResponse.body.widget.id;
       const updateData = { content: 'a'.repeat(10001) }; // Too long

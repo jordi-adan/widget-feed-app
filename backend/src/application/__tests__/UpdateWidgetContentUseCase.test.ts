@@ -26,7 +26,7 @@ describe('UpdateWidgetContentUseCase', () => {
       const widgetId = WidgetId.generate();
       const originalWidget = Widget.create(
         widgetId,
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('Original content')
       );
       
@@ -72,7 +72,7 @@ describe('UpdateWidgetContentUseCase', () => {
       const widgetId = WidgetId.generate();
       const originalWidget = Widget.create(
         widgetId,
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('Original content')
       );
       
@@ -132,7 +132,7 @@ describe('UpdateWidgetContentUseCase', () => {
       const widgetId = WidgetId.generate();
       const originalWidget = Widget.create(
         widgetId,
-        WidgetType.create('text'),
+        WidgetType.create('text_block'),
         WidgetContent.create('Original content'),
         new Date('2023-01-01T00:00:00Z')
       );

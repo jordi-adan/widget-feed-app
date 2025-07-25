@@ -50,6 +50,9 @@ export const HorizontalCards: React.FC<HorizontalCardsProps> = ({ descriptor }) 
                     src={card.imageUrl} 
                     alt={card.title}
                     className="horizontal-cards__image"
+                    onError={(e) => {
+                      e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDE1MCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxNTAiIGhlaWdodD0iMTAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik02MyA0MEw4NyA2NEw3NCA3N0w1MCA1M0w2MyA0MFoiIGZpbGw9IiM5Q0EzQUYiLz4KPGNpcmNsZSBjeD0iNjUiIGN5PSI0NSIgcj0iNSIgZmlsbD0iIzlDQTNBRiIvPgo8L3N2Zz4K';
+                    }}
                   />
                   <div className="horizontal-cards__content">
                     <h4 className="horizontal-cards__card-title">{card.title}</h4>

@@ -1,11 +1,17 @@
 import { WidgetRepository } from '../../domain/repositories/WidgetRepository';
+import { WidgetDescriptorRepository } from '../../domain/repositories/WidgetDescriptorRepository';
 import { Widget } from '../../models/widget';
 import { WidgetId } from '../../domain/entities/value-objects/WidgetId';
 import { WidgetType } from '../../domain/entities/value-objects/WidgetType';
 import { WidgetContent } from '../../domain/entities/value-objects/WidgetContent';
+import { WidgetDescriptor } from '../../domain/entities/WidgetDescriptor';
+import { ContentType } from '../../domain/entities/value-objects/ContentType';
 
 export class DummyDataService {
-  constructor(private readonly widgetRepository: WidgetRepository) {}
+  constructor(
+    private readonly widgetRepository: WidgetRepository,
+    private readonly widgetDescriptorRepository: WidgetDescriptorRepository
+  ) {}
 
   async loadDummyData(): Promise<void> {
     console.log('🎭 Loading dummy data...');
@@ -37,10 +43,10 @@ export class DummyDataService {
         content: JSON.stringify({
           title: 'Popular Categories',
           cards: [
-            { title: 'Technology', image: 'https://via.placeholder.com/150x100', description: 'Latest tech news' },
-            { title: 'Sports', image: 'https://via.placeholder.com/150x100', description: 'Sports updates' },
-            { title: 'Entertainment', image: 'https://via.placeholder.com/150x100', description: 'Entertainment news' },
-            { title: 'Business', image: 'https://via.placeholder.com/150x100', description: 'Business insights' }
+            { id: 'card-1', title: 'Technology', imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=150&h=100&fit=crop', description: 'Latest tech news', actionUrl: '#' },
+            { id: 'card-2', title: 'Sports', imageUrl: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=150&h=100&fit=crop', description: 'Sports updates', actionUrl: '#' },
+            { id: 'card-3', title: 'Entertainment', imageUrl: 'https://images.unsplash.com/photo-1489599510025-c4625c9e3e0e?w=150&h=100&fit=crop', description: 'Entertainment news', actionUrl: '#' },
+            { id: 'card-4', title: 'Business', imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=150&h=100&fit=crop', description: 'Business insights', actionUrl: '#' }
           ]
         })
       },
@@ -49,9 +55,9 @@ export class DummyDataService {
         content: JSON.stringify({
           title: 'Gallery',
           images: [
-            { url: 'https://via.placeholder.com/300x200', caption: 'Sample Image 1', alt: 'Placeholder 1' },
-            { url: 'https://via.placeholder.com/300x200', caption: 'Sample Image 2', alt: 'Placeholder 2' },
-            { url: 'https://via.placeholder.com/300x200', caption: 'Sample Image 3', alt: 'Placeholder 3' }
+            { id: 'img-1', url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=200&fit=crop', caption: 'Beautiful Nature', altText: 'Nature landscape' },
+            { id: 'img-2', url: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=300&h=200&fit=crop', caption: 'City Architecture', altText: 'Urban architecture' },
+            { id: 'img-3', url: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=300&h=200&fit=crop', caption: 'Abstract Art', altText: 'Abstract composition' }
           ],
           layout: 'grid'
         })
@@ -107,6 +113,7 @@ export class DummyDataService {
     let loadedCount = 0;
     for (const widgetData of dummyWidgets) {
       try {
+        // Create legacy widget
         const widget = Widget.create(
           WidgetId.generate(),
           WidgetType.create(widgetData.type),
@@ -115,13 +122,23 @@ export class DummyDataService {
         );
 
         await this.widgetRepository.save(widget);
+
+        // Create PRD WidgetDescriptor for the same data
+        const widgetDescriptor = WidgetDescriptor.createStatic({
+          id: WidgetId.generate(), // Different ID for PRD system
+          widgetType: WidgetType.create(widgetData.type),
+          contentType: ContentType.create('static'),
+          staticContent: JSON.parse(widgetData.content) // Parse JSON content for PRD system
+        });
+
+        await this.widgetDescriptorRepository.save(widgetDescriptor);
         loadedCount++;
       } catch (error) {
         console.error(`❌ Failed to create dummy widget of type ${widgetData.type}:`, error);
       }
     }
 
-    console.log(`✅ Successfully loaded ${loadedCount} dummy widgets`);
+    console.log(`✅ Successfully loaded ${loadedCount} dummy widgets in both legacy and PRD systems`);
   }
 
   async clearData(): Promise<void> {

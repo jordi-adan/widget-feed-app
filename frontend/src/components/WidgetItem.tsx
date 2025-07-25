@@ -3,7 +3,7 @@ import { LegacyWidget } from '../types';
 import './WidgetItem.css';
 
 interface WidgetItemProps {
-  widget: LegacyWidget;
+  widget: LegacyWidget & { type: string }; // Allow any string type for flexibility
   onUpdate: (id: string, content: string) => void;
   onDelete: (id: string) => void;
 }
@@ -117,7 +117,8 @@ export const WidgetItem: React.FC<WidgetItemProps> = ({ widget, onUpdate, onDele
       const parsedContent = JSON.parse(widget.content);
       
       // Handle different widget types
-      switch (widget.type) {
+      const widgetType = widget.type as string;
+      switch (widgetType) {
         case 'text_block':
           return (
             <div className="text-block-content">

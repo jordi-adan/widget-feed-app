@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Widget Feed App - Development Server Startup Script
-# This script starts PostgreSQL, backend, and frontend servers with automatic setup
+# This script starts backend and frontend servers with dummy data
 
 set -e
 
@@ -15,7 +15,6 @@ NC='\033[0m' # No Color
 # Ports
 BACKEND_PORT=3001
 FRONTEND_PORT=3000
-POSTGRES_PORT=5432
 
 echo -e "${BLUE}🚀 Widget Feed App - Development Server Startup${NC}"
 echo "=================================================="
@@ -68,61 +67,10 @@ kill_port_processes $BACKEND_PORT "backend"
 kill_port_processes $FRONTEND_PORT "frontend"
 
 echo ""
-echo -e "${BLUE}🗄️  Starting PostgreSQL Database...${NC}"
-echo "====================================="
-
-# Check if Docker and docker-compose are available
-if ! command -v docker &> /dev/null; then
-    echo -e "${RED}❌ Docker is not installed or not running${NC}"
-    echo "Please install Docker and try again"
-    exit 1
-fi
-
-if ! command -v docker-compose &> /dev/null; then
-    echo -e "${RED}❌ docker-compose is not installed${NC}"
-    echo "Please install docker-compose and try again"
-    exit 1
-fi
-
-# Start PostgreSQL
-echo -e "${YELLOW}📦 Starting PostgreSQL container...${NC}"
-docker-compose up -d postgres-dev
-
-# Wait for PostgreSQL to be ready
-echo -e "${YELLOW}⏳ Waiting for PostgreSQL to be ready...${NC}"
-timeout=30
-counter=0
-while ! docker-compose exec postgres-dev pg_isready -U widget_user -d widget_feed_dev &> /dev/null; do
-    if [ $counter -eq $timeout ]; then
-        echo -e "${RED}❌ PostgreSQL did not start within $timeout seconds${NC}"
-        docker-compose logs postgres-dev
-        exit 1
-    fi
-    sleep 1
-    counter=$((counter + 1))
-    echo -n "."
-done
-echo
-
-echo -e "${GREEN}✅ PostgreSQL is ready${NC}"
-
-# Run migrations
-echo -e "${YELLOW}🚀 Running database migrations...${NC}"
-docker-compose --profile migration up flyway
-migration_exit_code=$?
-
-if [ $migration_exit_code -eq 0 ]; then
-    echo -e "${GREEN}✅ Database migrations completed${NC}"
-else
-    echo -e "${RED}❌ Database migrations failed${NC}"
-    exit 1
-fi
-
-echo ""
 echo -e "${BLUE}🏗️  Starting Application Servers...${NC}"
 echo "===================================="
 
-# Start backend server
+# Start backend server with dummy data
 echo -e "${YELLOW}📡 Starting Backend Server (Port $BACKEND_PORT)...${NC}"
 cd backend
 if [ ! -f "package.json" ]; then
@@ -136,10 +84,10 @@ if [ ! -d "node_modules" ]; then
     npm install
 fi
 
-# Start backend in background
-npm run dev > ../backend.log 2>&1 &
+# Start backend in background with dummy data
+npm run dev -- --dummy-data > ../backend.log 2>&1 &
 BACKEND_PID=$!
-echo -e "${GREEN}✅ Backend server started (PID: $BACKEND_PID)${NC}"
+echo -e "${GREEN}✅ Backend server started with dummy data (PID: $BACKEND_PID)${NC}"
 
 # Wait a moment for backend to start
 sleep 3
@@ -185,15 +133,17 @@ fi
 echo ""
 echo -e "${GREEN}🎉 SUCCESS! All services are running:${NC}"
 echo "========================================"
-echo -e "${GREEN}🗄️  PostgreSQL: localhost:$POSTGRES_PORT${NC}"
-echo -e "${GREEN}📡 Backend:     http://localhost:$BACKEND_PORT${NC}"
-echo -e "${GREEN}🌐 Frontend:    http://localhost:$FRONTEND_PORT${NC}"
+echo -e "${GREEN}� Backend API:  http://localhost:$BACKEND_PORT${NC}"
+echo -e "${GREEN}🌐 Frontend:     http://localhost:$FRONTEND_PORT${NC}"
+echo ""
+echo -e "${BLUE}📋 API Endpoints:${NC}"
+echo "• Health check:    http://localhost:$BACKEND_PORT/health"
+echo "• PRD Widgets:     http://localhost:$BACKEND_PORT/widgets"
+echo "• Legacy Widgets:  http://localhost:$BACKEND_PORT/api/widgets"
 echo ""
 echo -e "${BLUE}📋 Useful Commands:${NC}"
 echo "• View backend logs:   tail -f backend.log"
 echo "• View frontend logs:  tail -f frontend.log"
-echo "• Database console:    ./scripts/db-console.sh"
-echo "• Reset database:      ./scripts/db-reset.sh"
 echo "• Stop all services:   ./stop-dev.sh"
 echo ""
 echo -e "${YELLOW}💡 Press Ctrl+C to stop all services${NC}"
@@ -202,8 +152,6 @@ echo -e "${YELLOW}💡 Press Ctrl+C to stop all services${NC}"
 cleanup() {
     echo -e "\n${YELLOW}🛑 Shutting down services...${NC}"
     kill $BACKEND_PID $FRONTEND_PID 2>/dev/null || true
-    echo -e "${YELLOW}🗄️  Stopping PostgreSQL...${NC}"
-    docker-compose stop postgres-dev
     echo -e "${GREEN}✅ All services stopped${NC}"
     exit 0
 }
@@ -216,12 +164,14 @@ while true; do
     # Check if both processes are still running
     if ! kill -0 $BACKEND_PID 2>/dev/null; then
         echo -e "${RED}❌ Backend process died unexpectedly${NC}"
+        cat ../backend.log | tail -20
         kill $FRONTEND_PID 2>/dev/null || true
         exit 1
     fi
     
     if ! kill -0 $FRONTEND_PID 2>/dev/null; then
         echo -e "${RED}❌ Frontend process died unexpectedly${NC}"
+        cat ../frontend.log | tail -20
         kill $BACKEND_PID 2>/dev/null || true
         exit 1
     fi

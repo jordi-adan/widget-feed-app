@@ -3,8 +3,8 @@ import { WidgetDescriptor } from '../../types';
 import { TextBlock } from './TextBlock';
 import { ExpandableList } from './ExpandableList';
 import { HorizontalCards } from './HorizontalCards';
+import { ImageList } from './ImageList';
 // Import other widget components as we create them
-// import { ImageList } from './ImageList';
 // import { HighlightBanner } from './HighlightBanner';
 // import { QuickActions } from './QuickActions';
 
@@ -24,8 +24,7 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({ descriptor }) =>
       return <HorizontalCards descriptor={descriptor} />;
     
     case 'image_list':
-      // TODO: Implement ImageList component
-      return <div>ImageList component coming soon...</div>;
+      return <ImageList descriptor={descriptor} />;
     
     case 'highlight_banner':
       // TODO: Implement HighlightBanner component

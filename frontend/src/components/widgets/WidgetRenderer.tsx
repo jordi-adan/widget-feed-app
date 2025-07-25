@@ -2,11 +2,10 @@ import React from 'react';
 import { WidgetDescriptor } from '../../types';
 import { TextBlock } from './TextBlock';
 import { ExpandableList } from './ExpandableList';
-// Import other widget components as we create them
-// import { HorizontalCards } from './HorizontalCards';
-// import { ImageList } from './ImageList';
-// import { HighlightBanner } from './HighlightBanner';
-// import { QuickActions } from './QuickActions';
+import { HorizontalCards } from './HorizontalCards';
+import { ImageList } from './ImageList';
+import { HighlightBanner } from './HighlightBanner';
+import { QuickActions } from './QuickActions';
 
 export interface WidgetRendererProps {
   descriptor: WidgetDescriptor;
@@ -21,20 +20,16 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({ descriptor }) =>
       return <ExpandableList descriptor={descriptor} />;
     
     case 'horizontal_cards':
-      // TODO: Implement HorizontalCards component
-      return <div>HorizontalCards component coming soon...</div>;
+      return <HorizontalCards descriptor={descriptor} />;
     
     case 'image_list':
-      // TODO: Implement ImageList component
-      return <div>ImageList component coming soon...</div>;
+      return <ImageList descriptor={descriptor} />;
     
     case 'highlight_banner':
-      // TODO: Implement HighlightBanner component
-      return <div>HighlightBanner component coming soon...</div>;
+      return <HighlightBanner descriptor={descriptor} />;
     
     case 'quick_actions':
-      // TODO: Implement QuickActions component
-      return <div>QuickActions component coming soon...</div>;
+      return <QuickActions descriptor={descriptor} />;
     
     default:
       return (
